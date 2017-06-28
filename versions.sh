@@ -9,12 +9,7 @@ export     lapack_version=3.7.0
 export  armadillo_version=7.950.1
 
 export setuptools_version=36.0.1
-export     cython_version=0.25.2
-export      numpy_version=1.11.2
-export      scipy_version=0.16.1
-export    numexpr_version=2.6.2
-export   pytables_version=3.2.0
-export       nose_version=1.3.7
+export        pip_version=9.0.1
 
 export      cubit_version=14.0  # 12.2  13.1  14.0
 export        cgm_version=${cubit_version}

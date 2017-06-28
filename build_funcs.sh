@@ -8,6 +8,8 @@
 #     HDF5
 #     LAPACK
 #     Armadillo
+#     Setuptools
+#     Pip
 #     CUBIT
 #     CGM
 #     MOAB
@@ -213,6 +215,42 @@ function build_armadillo() {
   cmake ../src ${cmake_string}
   make -j ${jobs}
   make install
+}
+
+function build_setuptools() {
+  name=setuptools
+  version=${setuptools_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.zip
+  tar_f=${name}-${version}
+  url=https://pypi.python.org/packages/a9/23/720c7558ba6ad3e0f5ad01e0d6ea2288b486da32f053c73e259f7c392042/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  cd ${tar_f}
+
+  python setup.py install --user
+}
+
+function build_pip() {
+  name=pip
+  version=${pip_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  cd ${tar_f}
+
+  python setup.py install --user
 }
 
 function build_cubit() {
