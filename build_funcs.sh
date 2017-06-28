@@ -1,26 +1,25 @@
 #!/bin/bash
 
 # Package list
-#   GCC
-#   OpenMPI
-#   MPICH
-#   Python
-#   HDF5
-#   LAPACK
-#   Armadillo
-#   CUBIT
-#   CGM
-#   MOAB
-#   MCNP5/6
-#   Geant4
-#   FLUKA
-#   DAGMC
-#   MCNP2CAD
-#   ALARA
-#   PyNE
-#   ADVANTG
+#     GCC
+#     OpenMPI
+#     MPICH
+#     Python
+#     HDF5
+#     LAPACK
+#     Armadillo
+#     CUBIT
+#     CGM
+#     MOAB
+#     MCNP5/6
+#     Geant4
+#     FLUKA
+#     DAGMC
+#     MCNP2CAD
+#     ALARA
+#     PyNE
+#     ADVANTG
 
-# Build GCC
 function build_gcc() {
   name=gcc
   version=${gcc_version}
@@ -56,7 +55,6 @@ function build_gcc() {
   make install
 }
 
-# Build OpenMPI
 function build_openmpi() {
   name=openmpi
   version=${openmpi_version}
@@ -83,7 +81,6 @@ function build_openmpi() {
   make install
 }
 
-# Build MPICH
 function build_mpich() {
   name=mpich
   version=${mpich_version}
@@ -109,7 +106,6 @@ function build_mpich() {
   make install
 }
 
-# Build Python
 function build_python() {
   name=python
   version=${python_version}
@@ -138,7 +134,6 @@ function build_python() {
   make install
 }
 
-# Build HDF5
 function build_hdf5() {
   name=hdf5
   version=${hdf5_version}
@@ -166,7 +161,6 @@ function build_hdf5() {
   make install
 }
 
-# Build LAPACK
 function build_lapack() {
   name=lapack
   version=${lapack_version}
@@ -194,7 +188,6 @@ function build_lapack() {
   make install
 }
 
-# Build Armadillo
 function build_armadillo() {
   name=armadillo
   version=${armadillo_version}
@@ -222,7 +215,6 @@ function build_armadillo() {
   make install
 }
 
-# Build CUBIT
 function build_cubit() {
   name=cubit
   version=${cubit_version}
@@ -235,7 +227,6 @@ function build_cubit() {
   tar -xzvf ${dist_dir}/${tarball}
 }
 
-# Build CGM
 function build_cgm() {
   name=cgm
   version=${cgm_version}
@@ -274,7 +265,6 @@ function build_cgm() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-# Build MOAB
 function build_moab() {
   if [[ ${moab_version} == "4.9.1"* ]]; then with_cgm=true
   else with_cgm=false
@@ -313,8 +303,6 @@ function build_moab() {
   config_string+=" --enable-shared"
   config_string+=" --enable-optimize"
   config_string+=" --disable-debug"
-  #config_string+=" --disable-optimize"
-  #config_string+=" --enable-debug"
   config_string+=" --with-hdf5=${install_dir}/hdf5-${hdf5_version}"
   if [[ ${with_cgm} == "true" ]]; then
     config_string+=" --enable-irel"
@@ -335,7 +323,6 @@ function build_moab() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-# Build MCNP
 function build_mcnp() {
   name=MCNP
   folder=${name}
@@ -378,7 +365,6 @@ function build_mcnp() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-# Build Geant4
 function build_geant4() {
   name=geant4
   version=${geant4_version}
@@ -407,7 +393,6 @@ function build_geant4() {
   make install
 }
 
-# Build FLUKA
 function build_fluka() {
   name=fluka
   version=${fluka_version}
@@ -426,7 +411,6 @@ function build_fluka() {
   bash flutil/ldpmqmd
 }
 
-# Build DAGMC
 function build_dagmc() {
   name=DAGMC
   folder=${name}
@@ -519,7 +503,6 @@ function build_dagmc() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-# Build MCNP2CAD
 function build_mcnp2cad() {
   name=mcnp2cad
   folder=mcnp2cad-cgm-${cgm_version}
@@ -551,7 +534,6 @@ function build_mcnp2cad() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-# Build ALARA
 function build_alara() {
   name=ALARA
   folder=${name}
@@ -576,7 +558,6 @@ function build_alara() {
   make install
 }
 
-# Build PyNE
 function build_pyne() {
   name=pyne
   folder=${name}
@@ -601,7 +582,6 @@ function build_pyne() {
     setup_string+=" -DCMAKE_BUILD_TYPE=Debug"
   fi
   setup_string_2=
-  #setup_string_2+=" --bootstrap"
   setup_string_2+=" --prefix=${install_dir}/${folder}"
 
   LDPATH_orig=${LD_LIBRARY_PATH}
@@ -616,7 +596,6 @@ function build_pyne() {
   PYTHONPATH=${PPATH_orig}
 }
 
-# Build ADVANTG
 function build_advantg() {
   name=advantg
   version=${advantg_version}
@@ -636,9 +615,8 @@ function build_advantg() {
   setup_string+=" --nox11"
   setup_string+=" --"
   setup_string+=" --no-prompts"
-  #setup_string+=" --mcnp-executable=${install_dir}/mcnp6/bin/mcnp5"
-  setup_string+=" --mcnp-executable=/opt/MCNP611/MCNP_CODE/bin/orig/mcnp5"
-  #setup_string+=" --prefix=${install_dir}/${folder}"
+  setup_string+=" --mcnp-executable=${mcnp_dir}/mcnp5"
+  #setup_string+=" --prefix=${HOME}/opt/precompiled/advantg-3.0.3"
   setup_string+=" --prefix=/opt/advantg-3.0.3"
 
   bash advantg-3.0.3-linux-x86_64-setup.sh ${setup_string}

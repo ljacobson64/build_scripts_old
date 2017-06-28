@@ -12,6 +12,12 @@ shift
 
 export install_dir=${HOME}/opt/${compiler}
 export build_dir=/scratch/local/${USER}/build/${compiler}
+export mcnp_dir=${HOME}/MCNP/MCNP_CODE/bin/orig
+
+export install_mcnp5=true
+export install_mcnp6=true
+export install_geant4=true
+export install_fluka=false
 
 if [[ ${compiler} == "gcc"* ]]; then
   gcc_version_major=${compiler:4}
@@ -41,11 +47,6 @@ else
   echo "Unknown compiler"
   exit
 fi
-
-install_mcnp5=true
-install_mcnp6=true
-install_geant4=true
-install_fluka=false
 
 cmake  --version
 ${CC}  --version

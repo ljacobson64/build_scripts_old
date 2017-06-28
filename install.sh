@@ -12,6 +12,12 @@ shift
 
 export install_dir=${HOME}/opt/${compiler}
 export build_dir=${HOME}/build/${compiler}
+export mcnp_dir=/opt/MCNP611/MCNP_CODE/bin/orig
+
+export install_mcnp5=true
+export install_mcnp6=true
+export install_geant4=true
+export install_fluka=true
 
 if [[ ${compiler} == "gcc"* ]]; then
   gcc_version_major=${compiler:4}
@@ -40,11 +46,6 @@ else
   echo "Unknown compiler"
   exit
 fi
-
-install_mcnp5=true
-install_mcnp6=true
-install_geant4=true
-install_fluka=true
 
 cmake  --version
 ${CC}  --version
