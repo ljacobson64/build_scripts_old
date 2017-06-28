@@ -10,6 +10,7 @@ umask 0022
 compiler=$1
 shift
 
+export jobs=`grep -c processor /proc/cpuinfo`
 export install_dir=${HOME}/opt/${compiler}
 export build_dir=/scratch/local/${USER}/build/${compiler}
 export mcnp_dir=${HOME}/MCNP/MCNP_CODE/bin/orig

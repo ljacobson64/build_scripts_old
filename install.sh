@@ -10,6 +10,7 @@ set -e
 compiler=$1
 shift
 
+export jobs=`grep -c processor /proc/cpuinfo`
 export install_dir=${HOME}/opt/${compiler}
 export build_dir=${HOME}/build/${compiler}
 export mcnp_dir=/opt/MCNP611/MCNP_CODE/bin/orig
