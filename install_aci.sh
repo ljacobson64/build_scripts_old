@@ -26,8 +26,8 @@ if [[ ${compiler} == "gcc"* ]]; then
     export PATH=${install_dir}/gcc-5.4.0/bin:${PATH}
     export LD_LIBRARY_PATH=${install_dir}/gcc-5.4.0/lib64:${LD_LIBRARY_PATH}
   elif [[ ${gcc_version_major} == "6" ]]; then
-    export PATH=${install_dir}/gcc-6.3.0/bin:${PATH}
-    export LD_LIBRARY_PATH=${install_dir}/gcc-6.3.0/lib64:${LD_LIBRARY_PATH}
+    export PATH=${install_dir}/gcc-6.4.0/bin:${PATH}
+    export LD_LIBRARY_PATH=${install_dir}/gcc-6.4.0/lib64:${LD_LIBRARY_PATH}
   elif [[ ${gcc_version_major} == "7" ]]; then
     export PATH=${install_dir}/gcc-7.1.0/bin:${PATH}
     export LD_LIBRARY_PATH=${install_dir}/gcc-7.1.0/lib64:${LD_LIBRARY_PATH}

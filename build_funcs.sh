@@ -223,7 +223,7 @@ function build_setuptools() {
   folder=${name}-${version}
   tarball=${name}-${version}.zip
   tar_f=${name}-${version}
-  url=https://pypi.python.org/packages/a9/23/720c7558ba6ad3e0f5ad01e0d6ea2288b486da32f053c73e259f7c392042/${tarball}
+  url=https://pypi.python.org/packages/25/c1/344fdd1f543cba2d38c6fb7db86f2ffc468e72006487005e50df08f0243d/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}
@@ -378,7 +378,8 @@ function build_mcnp() {
 
   cmake_string=
   cmake_string+=" -DBUILD_MCNP5=ON"
-  cmake_string+=" -DBUILD_MCNP6=OFF"
+  cmake_string+=" -DBUILD_MCNPX=ON"
+  cmake_string+=" -DBUILD_MCNP6=ON"
   cmake_string+=" -DBUILD_MCNP611=ON"
   cmake_string+=" -DMCNP_PLOT=ON"
   cmake_string+=" -DOPENMP_BUILD=ON"

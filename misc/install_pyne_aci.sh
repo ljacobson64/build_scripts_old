@@ -3,11 +3,11 @@
 gmp_version=6.1.2
 mpfr_version=3.1.5
 mpc_version=1.0.3
-gcc_version=6.3.0
+gcc_version=6.4.0
 python_version=2.7.13
 hdf5_version=1.8.13
 moab_version=4.9.2
-setuptools_version=36.0.1
+setuptools_version=36.2.0
 pip_version=9.0.1
 
 jobs=16
@@ -99,7 +99,7 @@ export LD_LIBRARY_PATH=${install_dir}/moab-${moab_version}/lib:${LD_LIBRARY_PATH
 
 # Build setuptools and pip
 cd ${build_dir}
-wget https://pypi.python.org/packages/a9/23/720c7558ba6ad3e0f5ad01e0d6ea2288b486da32f053c73e259f7c392042/setuptools-${setuptools_version}.zip
+wget https://pypi.python.org/packages/25/c1/344fdd1f543cba2d38c6fb7db86f2ffc468e72006487005e50df08f0243d/setuptools-${setuptools_version}.zip
 unzip setuptools-${setuptools_version}.zip
 cd setuptools-${setuptools_version}
 python setup.py install --user
