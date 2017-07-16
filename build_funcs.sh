@@ -460,11 +460,6 @@ function build_dagmc() {
   mcnp5_tarball=mcnp/mcnp${mcnp5_version}_source.tar.gz
   mcnp6_tarball=mcnp/mcnp${mcnp6_version}_source.tar.gz
 
-  install_mcnp5=true
-  install_mcnp6=true
-  install_geant4=true
-  install_fluka=true
-
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
