@@ -208,7 +208,7 @@ function build_armadillo() {
   mkdir -p ${folder}/bld
   cd ${folder}
   if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  tar -xJvf ${dist_dir}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
