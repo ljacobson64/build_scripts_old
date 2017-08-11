@@ -13,7 +13,7 @@ shift
 export jobs=`grep -c processor /proc/cpuinfo`
 export install_dir=${HOME}/opt/${compiler}
 export build_dir=${HOME}/build/${compiler}
-export mcnp_dir=/opt/MCNP611/MCNP_CODE/bin/orig
+export mcnp_dir=/opt/MCNP/MCNP_CODE/bin
 
 export install_mcnp5=true
 export install_mcnp6=true
