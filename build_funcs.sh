@@ -60,10 +60,13 @@ function build_gcc() {
 function build_openmpi() {
   name=openmpi
   version=${openmpi_version}
+  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
+  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  fi
   folder=${name}-${version}
   tarball=${name}-${version}.tar.gz
   tar_f=${name}-${version}
-  url=http://www.open-mpi.org/software/ompi/v1.10/downloads/${tarball}
+  url=http://www.open-mpi.org/software/ompi/v${version_major}/downloads/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -139,10 +142,13 @@ function build_python() {
 function build_hdf5() {
   name=hdf5
   version=${hdf5_version}
+  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
+  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  fi
   folder=${name}-${version}
   tarball=${name}-${version}.tar.gz
   tar_f=${name}-${version}
-  url=https://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${version}/src/${tarball}
+  url=https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${version_major}/hdf5-${version}/src/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -223,7 +229,7 @@ function build_setuptools() {
   folder=${name}-${version}
   tarball=${name}-${version}.zip
   tar_f=${name}-${version}
-  url=https://pypi.python.org/packages/25/c1/344fdd1f543cba2d38c6fb7db86f2ffc468e72006487005e50df08f0243d/${tarball}
+  url=https://pypi.python.org/packages/07/a0/11d3d76df54b9701c0f7bf23ea9b00c61c5e14eb7962bb29aed866a5844e/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}
