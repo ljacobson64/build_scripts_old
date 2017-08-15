@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-#umask 0022
+umask 0002
 
 # gcc:   4.4, 4.6, 4.7, 4.8, 4.9, 5, 6, 7
 # clang: 3.5, 3.6, 3.7, 3.8, 3.9, 4.0
@@ -26,9 +26,9 @@ if [[ ${compiler} == "gcc"* ]]; then
   export CXX=`which g++-${gcc_version_major}`
   export FC=`which gfortran-${gcc_version_major}`
 elif [[ ${compiler} == "clang"* ]]; then
-  clang_version=${compiler:6}
-  export CC=`which clang-${clang_version}`
-  export CXX=`which clang++-${clang_version}`
+  clang_version_major=${compiler:6}
+  export CC=`which clang-${clang_version_major}`
+  export CXX=`which clang++-${clang_version_major}`
   export FC=`which gfortran-6`
 elif [[ ${compiler} == "intel"* ]]; then
   if   [[ ${compiler} == "intel-12" ]]; then intel_root=/opt/intel/composer_xe_2011_sp1.13.367
