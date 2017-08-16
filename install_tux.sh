@@ -23,7 +23,7 @@ export install_fluka=false
 if [[ ${compiler} == "gcc"* ]]; then
   if [[ ! ${compiler} == "gcc-4.7" ]]; then
     if   [[ ${compiler} == "gcc-6" ]]; then gcc_root=${install_dir}/gcc-6.4.0
-    elif [[ ${compiler} == "gcc-7" ]]; then gcc_root=${install_dir}/gcc-7.1.0
+    elif [[ ${compiler} == "gcc-7" ]]; then gcc_root=${install_dir}/gcc-7.2.0
     else echo "Unknown compiler"; exit
     fi
     export PATH=${gcc_root}/bin:${PATH}
