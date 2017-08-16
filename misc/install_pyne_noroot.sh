@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+umask 0022
+
 gmp_version=6.1.2
 mpfr_version=3.1.5
 mpc_version=1.0.3

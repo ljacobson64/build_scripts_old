@@ -564,14 +564,14 @@ function build_mcnp2cad() {
   cd ${name}
 
   make_string=
-  if [ ! -e /usr/lib/libarmadillo.so ]; then
+  if [ ! -f /usr/lib/libarmadillo.so ]; then
     make_string+=" ARMADILLO_BASE_DIR=${install_dir}/armadillo-${armadillo_version}"
   fi
   make_string+=" CGM_BASE_DIR=${install_dir}/cgm-${cgm_version}"
   make_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   LDPATH_orig=${LD_LIBRARY_PATH}
-  if [ ! -e /usr/lib/libarmadillo.so ]; then
+  if [ ! -f /usr/lib/libarmadillo.so ]; then
     LD_LIBRARY_PATH=${install_dir}/armadillo-${armadillo_version}/lib:${LD_LIBRARY_PATH}
   fi
   LD_LIBRARY_PATH=${install_dir}/cubit-${cubit_version}/bin:${LD_LIBRARY_PATH}
