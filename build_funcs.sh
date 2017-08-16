@@ -41,7 +41,7 @@ function build_gcc() {
   tar -xzvf ${dist_dir}/${tarball}
   ln -snf ${tar_f} src
   cd ${tar_f}
-  tar -xjvf ${dist_dir}/gmp-${gmp_version}.tar.bz2
+  tar -xJvf ${dist_dir}/gmp-${gmp_version}.tar.xz
   tar -xzvf ${dist_dir}/mpfr-${mpfr_version}.tar.gz
   tar -xzvf ${dist_dir}/mpc-${mpc_version}.tar.gz
   ln -snf gmp-${gmp_version} gmp
@@ -213,9 +213,9 @@ function build_armadillo() {
   cd bld
 
   cmake_string=
-  cmake_string+=" -DBUILD_STATIC_LIBS=ON"
   cmake_string+=" -DBUILD_SHARED_LIBS=ON"
-  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
+  cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
+  cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
 
   cmake ../src ${cmake_string}
@@ -458,9 +458,11 @@ function build_fluka() {
 
 function build_dagmc() {
   name=DAGMC
-  folder=${name}
+  folder=${name}-moab-${moab_version}
   repo=https://github.com/svalinn/${name}
-  branch=develop
+  if [[ ${moab_version} == "5.0" ]]; then branch=develop
+  else branch=moab-${moab_version}
+  fi
   mcnp5_version=5.1.60
   mcnp6_version=6.1.1beta
   mcnp5_tarball=mcnp/mcnp${mcnp5_version}_source.tar.gz
@@ -562,10 +564,16 @@ function build_mcnp2cad() {
   cd ${name}
 
   make_string=
+  if [ ! -e /usr/lib/libarmadillo.so ]; then
+    make_string+=" ARMADILLO_BASE_DIR=${install_dir}/armadillo-${armadillo_version}"
+  fi
   make_string+=" CGM_BASE_DIR=${install_dir}/cgm-${cgm_version}"
   make_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   LDPATH_orig=${LD_LIBRARY_PATH}
+  if [ ! -e /usr/lib/libarmadillo.so ]; then
+    LD_LIBRARY_PATH=${install_dir}/armadillo-${armadillo_version}/lib:${LD_LIBRARY_PATH}
+  fi
   LD_LIBRARY_PATH=${install_dir}/cubit-${cubit_version}/bin:${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   make -j ${jobs} ${make_string}
