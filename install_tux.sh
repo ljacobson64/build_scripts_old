@@ -3,9 +3,9 @@
 set -e
 umask 0022
 
-# gcc:   4.7, 6
+# gcc:   4.7, 6, 7
 # clang: 4.0
-# intel:
+# intel: 17
 
 compiler=$1
 shift
@@ -44,6 +44,15 @@ elif [[ ${compiler} == "clang"* ]]; then
   export CC=`which clang`
   export CXX=`which clang++`
   export FC=`which gfortran`
+elif [[ ${compiler} == "intel"* ]]; then
+  if   [[ ${compiler} == "intel-17" ]]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2017.4.196/linux
+  else echo "Unknown compiler"; exit
+  fi
+  export PATH=${intel_root}/bin/intel64:${PATH}
+  export LD_LIBRARY_PATH=${intel_root}/compiler/lib/intel64:${LD_LIBRARY_PATH}
+  export CC=`which icc`
+  export CXX=`which icpc`
+  export FC=`which ifort`
 else echo "Unknown compiler"; exit
 fi
 
