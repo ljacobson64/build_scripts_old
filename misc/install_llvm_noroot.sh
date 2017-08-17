@@ -21,10 +21,10 @@ version=4.0.1
 jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ "${HOSTNAME}" == "aci"* ]]; then
-  dist_dir=/home/lucas/dist
-  install_dir=/home/lucas/opt/clang-4.0
-  build_dir=/scratch/local/lucas/build/clang-4.0
-  gcc_root=/home/lucas/opt/gcc-6/gcc-6.4.0
+  dist_dir=/home/ljjacobson/dist
+  install_dir=/home/ljjacobson/opt/clang-4.0
+  build_dir=/scratch/local/ljjacobson/build/clang-4.0
+  gcc_root=/home/ljjacobson/opt/gcc-6/gcc-6.4.0
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
   install_dir=/groupspace/cnerg/users/jacobson/opt/clang-4.0

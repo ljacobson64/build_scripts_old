@@ -36,9 +36,9 @@ jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ ${HOSTNAME} == "aci"* ]]; then
   gcc_version_native=4.4
-  install_dir=/home/lucas/opt/${compiler}
-  build_dir=/scratch/local/${USER}/build/${compiler}
-  mcnp_dir=/home/lucas/MCNP/MCNP_CODE/bin
+  install_dir=/home/ljjacobson/opt/${compiler}
+  build_dir=/scratch/local/ljjacobson/build/${compiler}
+  mcnp_dir=/home/ljjacobson/MCNP/MCNP_CODE/bin
 elif [[ ${HOSTNAME} == "tux"* ]]; then
   gcc_version_native=4.7
   install_dir=/groupspace/cnerg/users/jacobson/opt/${compiler}
@@ -64,7 +64,7 @@ if [[ ${compiler} == "gcc"* ]]; then
   CXX=`which g++`
   FC=`which gfortran`
 elif [[ ${compiler} == "clang"* ]]; then
-  if   [[ ${HOSTNAME} == "aci"* ]]; then gcc_root=/home/lucas/opt/gcc-6/gcc-6.4.0
+  if   [[ ${HOSTNAME} == "aci"* ]]; then gcc_root=/home/ljjacobson/opt/gcc-6/gcc-6.4.0
   elif [[ ${HOSTNAME} == "tux"* ]]; then gcc_root=/groupspace/cnerg/users/jacobson/opt/gcc-6/gcc-6.4.0
   fi
   PATH=${gcc_root}/bin:${PATH}
