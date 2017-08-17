@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Package list
+#
 #     GCC
 #     OpenMPI
 #     MPICH
@@ -310,10 +311,13 @@ function build_cgm() {
 }
 
 function build_moab() {
-  if [[ ${moab_version} == "4.9.1"* ]]; then with_cgm=true
-  else with_cgm=false
+  if [[ ${moab_version} == *"-cgm-"* ]]; then
+    with_cgm=true
+    cgm_version=$(cut -d '-' -f3  <<< "${moab_version}")
+    moab_version=$(cut -d '-' -f1  <<< "${moab_version}")
+  else
+    with_cgm=false
   fi
-  with_cgm=false
 
   name=moab
   version=${moab_version}
@@ -457,6 +461,11 @@ function build_fluka() {
 }
 
 function build_dagmc() {
+  if [[ ${dagmc_version} == *"moab-"* ]]; then
+    moab_version=$(cut -d '-' -f2  <<< "${dagmc_version}")
+    dagmc_version=
+  fi
+
   name=DAGMC
   folder=${name}-moab-${moab_version}
   repo=https://github.com/svalinn/${name}

@@ -1,15 +1,5 @@
 #!/bin/bash
 
-function unknown_hostname() {
-  echo "Unknown hostname = ${HOSTNAME}"
-  exit
-}
-
-function unknown_compiler() {
-  echo "Unknown compiler = ${compiler}"
-  exit
-}
-
 #            ACI       TUX
 # gcc-4.4    native    -
 # gcc-4.7    -         native
@@ -24,6 +14,16 @@ function unknown_compiler() {
 # intel-13   module    -
 # intel-16   module    -
 # intel-17   -         user
+
+function unknown_hostname() {
+  echo "Unknown hostname = ${HOSTNAME}"
+  exit
+}
+
+function unknown_compiler() {
+  echo "Unknown compiler = ${compiler}"
+  exit
+}
 
 set -e
 umask 0022
@@ -84,7 +84,12 @@ elif [[ ${compiler} == "intel"* ]]; then
     else unknown_compiler
     fi
   elif [[ ${HOSTNAME} == "tux"* ]]; then
-    if [ ${compiler} == "intel-17" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2017.4.196/linux
+    if   [ ${compiler} == "intel-12" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2011_sp1.13.367
+    elif [ ${compiler} == "intel-13" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2013.5.192
+    elif [ ${compiler} == "intel-14" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2013_sp1.6.214
+    elif [ ${compiler} == "intel-15" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2015.6.233
+    elif [ ${compiler} == "intel-16" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2016.4.258/linux
+    elif [ ${compiler} == "intel-17" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2017.4.196/linux
     else unknown_compiler
     fi
   fi
@@ -111,6 +116,16 @@ source versions.sh
 source build_funcs.sh
 mkdir -p ${build_dir}
 
-for build in "$@"; do
-  build_${build}
+for package in "$@"; do
+  if [[ ${package} == *"-"* ]]; then
+    name=$(cut -d '-' -f1  <<< "${package}")
+    version=$(cut -d '-' -f2- <<< "${package}")
+    eval ${name}_version=${version}
+  else
+    name=${package}
+    temp=${name}_version
+    eval version=${!temp}
+  fi
+  echo "Building ${name} version ${version}"
+  build_${name}
 done
