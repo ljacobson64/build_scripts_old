@@ -533,8 +533,13 @@ function build_dagmc() {
 }
 
 function build_mcnp2cad() {
+  if [[ ${mcnp2cad_version} == *"cgm-"* ]]; then
+    cgm_version=$(cut -d '-' -f2  <<< "${mcnp2cad_version}")
+    mcnp2cad_version=
+  fi
+
   name=mcnp2cad
-  folder=mcnp2cad-cgm-${cgm_version}
+  folder=${name}-cgm-${cgm_version}
   if [[ ${cgm_version} == "14"* ]]; then
     repo=https://github.com/svalinn/${name}
     branch=sns_gq_updates
