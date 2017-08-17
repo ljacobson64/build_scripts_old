@@ -251,18 +251,6 @@ function build_pip() {
   python setup.py install --user
 }
 
-function build_cubit() {
-  name=cubit
-  version=${cubit_version}
-  folder=${name}-${version}
-  tarball=Cubit_LINUX64.${version}.tar.gz
-
-  cd ${install_dir}
-  mkdir ${folder}
-  cd ${folder}
-  tar -xzvf ${dist_dir}/${tarball}
-}
-
 function build_cgm() {
   name=cgm
   version=${cgm_version}
@@ -289,12 +277,12 @@ function build_cgm() {
   config_string+=" --enable-optimize"
   config_string+=" --enable-shared"
   config_string+=" --disable-debug"
-  config_string+=" --with-cubit=${install_dir}/cubit-${cubit_version}"
+  config_string+=" --with-cubit=${install_dir}/cubit-${cgm_version}"
   config_string+=" --prefix=${install_dir}/${folder}"
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   LDPATH_orig=${LD_LIBRARY_PATH}
-  LD_LIBRARY_PATH=${install_dir}/cubit-${cubit_version}/bin:${LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=${install_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
   ../src/configure ${config_string}
   make -j ${jobs}
   make install
@@ -325,7 +313,6 @@ function build_moab() {
     repo=https://bitbucket.org/fathomteam/${name}
     branch=Version${version}
   fi
-  echo "Installing to ${build_dir}/${folder}"
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -353,7 +340,7 @@ function build_moab() {
   LDPATH_orig=${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
   if [[ ${with_cgm} == "true" ]]; then
-    LD_LIBRARY_PATH=${install_dir}/cubit-${cubit_version}/bin:${LD_LIBRARY_PATH}
+    LD_LIBRARY_PATH=${install_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
     LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   fi
   ../src/configure ${config_string}
@@ -574,7 +561,7 @@ function build_mcnp2cad() {
   if [ ! -f /usr/lib/libarmadillo.so ]; then
     LD_LIBRARY_PATH=${install_dir}/armadillo-${armadillo_version}/lib:${LD_LIBRARY_PATH}
   fi
-  LD_LIBRARY_PATH=${install_dir}/cubit-${cubit_version}/bin:${LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=${install_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   make -j ${jobs} ${make_string}
   mkdir -p ${install_dir}/${folder}/bin

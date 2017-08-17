@@ -15,8 +15,7 @@ export  armadillo_version=7.960.1
 export setuptools_version=36.2.7
 export        pip_version=9.0.1
 
-export      cubit_version=14.0  # 12.2  13.1  14.0
-export        cgm_version=${cubit_version}
+export        cgm_version=14.0  # 12.2  13.1  14.0
 export       moab_version=5.0  # 4.9.1  4.9.2  5.0  master
 
 export     geant4_version=10.03.p02  # 10.02.p03  10.03.p02
