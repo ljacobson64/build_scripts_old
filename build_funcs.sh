@@ -214,12 +214,19 @@ function build_armadillo() {
   cd bld
 
   cmake_string=
-  cmake_string+=" -DBUILD_SHARED_LIBS=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
   cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+  cmake_string_static=${cmake_string}
+  cmake_string_shared=${cmake_string}
+  cmake_string_static+=" -DBUILD_SHARED_LIBS=OFF"
+  cmake_string_shared+=" -DBUILD_SHARED_LIBS=ON"
 
-  cmake ../src ${cmake_string}
+  cmake ../src ${cmake_string_static}
+  make -j ${jobs}
+  make install
+  cd ..; rm -rf bld; mkdir -p bld; cd bld
+  cmake ../src ${cmake_string_shared}
   make -j ${jobs}
   make install
 }
