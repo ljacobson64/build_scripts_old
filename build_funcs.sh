@@ -1,28 +1,5 @@
 #!/bin/bash
 
-# Package list
-#
-#     GCC
-#     OpenMPI
-#     MPICH
-#     Python
-#     HDF5
-#     LAPACK
-#     Armadillo
-#     Setuptools
-#     Pip
-#     CUBIT
-#     CGM
-#     MOAB
-#     MCNP5/6
-#     Geant4
-#     FLUKA
-#     DAGMC
-#     MCNP2CAD
-#     ALARA
-#     PyNE
-#     ADVANTG
-
 function build_gcc() {
   name=gcc
   version=${gcc_version}
@@ -31,10 +8,6 @@ function build_gcc() {
   tar_f=${name}-${version}
   url=http://www.netgull.com/gcc/releases/gcc-${version}/${tarball}
 
-  gmp_version=6.1.2
-  mpfr_version=3.1.5
-  mpc_version=1.0.3
-
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
@@ -42,12 +15,23 @@ function build_gcc() {
   tar -xzvf ${dist_dir}/${tarball}
   ln -snf ${tar_f} src
   cd ${tar_f}
-  tar -xJvf ${dist_dir}/gmp-${gmp_version}.tar.xz
-  tar -xzvf ${dist_dir}/mpfr-${mpfr_version}.tar.gz
-  tar -xzvf ${dist_dir}/mpc-${mpc_version}.tar.gz
-  ln -snf gmp-${gmp_version} gmp
+
+  gmp_tarball=gmp-${gmp_version}.tar.xz
+  mpfr_tarball=mpfr-${mpfr_version}.tar.gz
+  mpc_tarball=mpc-${mpc_version}.tar.gz
+  gmp_url=https://gmplib.org/download/gmp/${gmp_tarball}
+  mpfr_url=http://www.mpfr.org/mpfr-current/${mpfr_tarball}
+  mpc_url=ftp://ftp.gnu.org/gnu/mpc/${mpc_tarball}
+  if [ ! -f ${dist_dir}/${gmp_tarball}  ]; then wget ${gmp_url}  -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${mpfr_tarball} ]; then wget ${mpfr_url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${mpc_tarball}  ]; then wget ${mpc_url}  -P ${dist_dir}; fi
+  tar -xJvf ${dist_dir}/${gmp_tarball}
+  tar -xzvf ${dist_dir}/${mpfr_tarball}
+  tar -xzvf ${dist_dir}/${mpc_tarball}
+  ln -snf gmp-${gmp_version}   gmp
   ln -snf mpfr-${mpfr_version} mpfr
-  ln -snf mpc-${mpc_version} mpc
+  ln -snf mpc-${mpc_version}   mpc
+
   cd ../bld
 
   config_string=
