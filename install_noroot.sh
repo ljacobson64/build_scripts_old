@@ -105,9 +105,11 @@ fi
 install_mcnp5=true
 install_mcnp6=true
 install_fluka=false
-if [ ${compiler} == "gcc-4.8" || ${compiler} == "gcc-4.9" ||
-     ${compiler} == "gcc-5" || ${compiler} == "gcc-6" ||
-     ${compiler} == "gcc-7"]; then
+if [ ${compiler} == "gcc-4.8" ] ||
+   [ ${compiler} == "gcc-4.9" ] ||
+   [ ${compiler} == "gcc-5"   ] ||
+   [ ${compiler} == "gcc-6"   ] ||
+   [ ${compiler} == "gcc-7"   ]; then
   install_geant4=true
 else
   install_geant4=false
