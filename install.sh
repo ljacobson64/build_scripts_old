@@ -50,8 +50,9 @@ fi
 
 install_mcnp5=true
 install_mcnp6=true
-install_geant4=true
 install_fluka=true
+install_geant4=true
+install_astyle=true
 
 cmake  --version
 ${CC}  --version
