@@ -446,9 +446,9 @@ function build_dagmc() {
 
   name=DAGMC
   folder=${name}-moab-${moab_version}
-  repo=https://github.com/svalinn/${name}
-  if [[ ${moab_version} == "5.0" ]]; then branch=develop
-  else branch=moab-${moab_version}
+  repo=https://github.com/ljacobson64/${name}
+  if [[ ${moab_version} == "4.9.2" ]]; then branch=moab-${moab_version}
+  else branch=latest
   fi
   mcnp5_version=5.1.60
   mcnp6_version=6.1.1beta
