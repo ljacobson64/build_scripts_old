@@ -2,7 +2,7 @@
 
 # gcc:   4.4, 4.6, 4.7, 4.8, 4.9, 5, 6, 7
 # clang: 3.5, 3.6, 3.7, 3.8, 3.9, 4.0
-# intel: 12, 13, 14, 15, 16, 17
+# intel: 15, 16, 17
 
 function unknown_compiler() {
   echo "Unknown compiler = ${compiler}"
@@ -32,12 +32,9 @@ elif [[ ${compiler} == "clang"* ]]; then
   CXX=`which clang++-${clang_version_major}`
   FC=`which gfortran-6`
 elif [[ ${compiler} == "intel"* ]]; then
-  if   [ ${compiler} == "intel-12" ]; then intel_root=/opt/intel/composer_xe_2011_sp1.13.367
-  elif [ ${compiler} == "intel-13" ]; then intel_root=/opt/intel/composer_xe_2013.5.192
-  elif [ ${compiler} == "intel-14" ]; then intel_root=/opt/intel/composer_xe_2013_sp1.6.214
-  elif [ ${compiler} == "intel-15" ]; then intel_root=/opt/intel/composer_xe_2015.6.233
+  if   [ ${compiler} == "intel-15" ]; then intel_root=/opt/intel/composer_xe_2015.6.233
   elif [ ${compiler} == "intel-16" ]; then intel_root=/opt/intel/compilers_and_libraries_2016.4.258/linux
-  elif [ ${compiler} == "intel-17" ]; then intel_root=/opt/intel/compilers_and_libraries_2017.4.196/linux
+  elif [ ${compiler} == "intel-17" ]; then intel_root=/opt/intel/compilers_and_libraries_2017.5.239/linux
   fi
   PATH=${intel_root}/bin/intel64:${PATH}
   LD_LIBRARY_PATH=${intel_root}/compiler/lib/intel64:${LD_LIBRARY_PATH}
