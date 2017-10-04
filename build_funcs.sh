@@ -304,11 +304,11 @@ function build_moab() {
   else folder=${name}-${version}
   fi
   if [[ ${version} == "master" ]]; then
-    repo=https://bitbucket.org/fathomteam/${name}
-    branch=master
+    repo=https://bitbucket.org/ljacobson64/${name}
+    branch=master-fix-intel
   elif [[ ${version} == "5.0" ]]; then
     repo=https://bitbucket.org/ljacobson64/${name}
-    branch=fix_intel_build
+    branch=Version5.0-fix-intel
   else
     repo=https://bitbucket.org/fathomteam/${name}
     branch=Version${version}
