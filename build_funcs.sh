@@ -502,7 +502,7 @@ function build_dagmc() {
     cmake_string+=" -DFLUKA_DIR=${install_dir}/fluka-${fluka_version}/bin"
   fi
   if [[ ${install_astyle} == "false" ]]; then
-    cmake_string+=" -BUILD_ASTYLE=OFF"
+    cmake_string+=" -DBUILD_ASTYLE=OFF"
   fi
   #cmake_string+=" -DBUILD_STATIC=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
