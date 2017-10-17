@@ -51,8 +51,8 @@ fi
 if [[ ${compiler} == "gcc"* ]]; then
   if [ ! ${compiler} == "gcc-${gcc_version_native}" ]; then
     if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${install_dir}/gcc-4.8.5
-    elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${install_dir}/gcc-4.9.3
-    elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${install_dir}/gcc-5.4.0
+    elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${install_dir}/gcc-4.9.4
+    elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${install_dir}/gcc-5.5.0
     elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${install_dir}/gcc-6.4.0
     elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${install_dir}/gcc-7.2.0
     else unknown_compiler
