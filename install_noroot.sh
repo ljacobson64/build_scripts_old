@@ -2,9 +2,9 @@
 
 #            ACI       TUX
 # gcc-4.4    native    -
-# gcc-4.7    -         native
+# gcc-4.7    -         -
 # gcc-4.8    -         -
-# gcc-4.9    -         -
+# gcc-4.9    -         native
 # gcc-5      -         -
 # gcc-6      compiled  compiled
 # gcc-7      compiled  compiled
@@ -40,7 +40,7 @@ if [[ ${HOSTNAME} == "aci"* ]]; then
   build_dir=/scratch/local/ljjacobson/build/${compiler}
   mcnp_dir=/home/ljjacobson/MCNP/MCNP_CODE/bin
 elif [[ ${HOSTNAME} == "tux"* ]]; then
-  gcc_version_native=4.7
+  gcc_version_native=4.9
   install_dir=/groupspace/cnerg/users/jacobson/opt/${compiler}
   build_dir=/local.hd/cnergg/jacobson/build/${compiler}
   mcnp_dir=/groupspace/cnerg/users/jacobson/MCNP/MCNP_CODE/bin
