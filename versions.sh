@@ -10,7 +10,7 @@ export      mpich_version=3.2     # 3.0.4  3.1.4  3.2
 export     python_version=2.7.13  # 2.6.9  2.7.13  3.6.1
 export       hdf5_version=1.8.13
 export     lapack_version=3.7.1
-export  armadillo_version=7.960.1
+export  armadillo_version=8.200.0
 
 export setuptools_version=36.2.7
 export        pip_version=9.0.1
