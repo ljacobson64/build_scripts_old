@@ -435,7 +435,7 @@ function build_fluka() {
   export FLUPRO=${PWD}
 
   make
-  bash flutil/ldpmqmd
+  #bash flutil/ldpmqmd
 }
 
 function build_dagmc() {

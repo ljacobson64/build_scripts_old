@@ -10,7 +10,8 @@
 # gcc-7      compiled  compiled
 # clang-3.0  -         native
 # clang-3.4  native    -
-# clang-4.0  -         compiled
+# clang-4.0  -         -
+# clang-5.0  -         compiled
 # intel-13   module    -
 # intel-16   module    -
 # intel-17   -         user
@@ -64,12 +65,12 @@ if [[ ${compiler} == "gcc"* ]]; then
   CXX=`which g++`
   FC=`which gfortran`
 elif [[ ${compiler} == "clang"* ]]; then
-  if   [[ ${HOSTNAME} == "aci"* ]]; then gcc_root=/home/ljjacobson/opt/gcc-6/gcc-6.4.0
-  elif [[ ${HOSTNAME} == "tux"* ]]; then gcc_root=/groupspace/cnerg/users/jacobson/opt/gcc-6/gcc-6.4.0
+  if [[ ${HOSTNAME} == "aci"* ]]; then
+    gcc_root=/home/ljjacobson/opt/gcc-6/gcc-6.4.0
+    PATH=${gcc_root}/bin:${PATH}
+    LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
   fi
-  PATH=${gcc_root}/bin:${PATH}
-  LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
-  if [ ${compiler} == "clang-4.0" ]; then clang_root=${install_dir}/llvm-4.0.1
+  if [ ${compiler} == "clang-5.0" ]; then clang_root=${install_dir}/llvm-5.0.0
   else unknown_compiler
   fi
   PATH=${clang_root}/bin:${PATH}
