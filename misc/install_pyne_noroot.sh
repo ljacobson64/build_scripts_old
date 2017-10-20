@@ -4,9 +4,9 @@ set -e
 umask 0022
 
 gmp_version=6.1.2
-mpfr_version=3.1.5
+mpfr_version=3.1.6
 mpc_version=1.0.3
-gcc_version=6.4.0
+gcc_version=7.2.0
 python_version=2.7.14
 hdf5_version=1.8.13
 moab_version=4.9.2
@@ -16,11 +16,11 @@ pip_version=9.0.1
 jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ "${HOSTNAME}" == "aci"* ]]; then
-  install_dir=/home/ljjacobson/opt/gcc-6
-  build_dir=/scratch/local/ljjacobson/build/gcc-6
+  install_dir=/home/ljjacobson/opt/gcc-7
+  build_dir=/scratch/local/ljjacobson/build/gcc-7
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
-  install_dir=/groupspace/cnerg/users/jacobson/opt/gcc-6
-  build_dir=/local.hd/cnergg/jacobson/build/gcc-6
+  install_dir=/groupspace/cnerg/users/jacobson/opt/gcc-7
+  build_dir=/local.hd/cnergg/jacobson/build/gcc-7
 else
   echo "Unknown hostname"
   exit

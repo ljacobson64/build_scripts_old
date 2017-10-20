@@ -24,7 +24,7 @@ if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
   install_dir=/home/ljjacobson/opt/clang-5.0
   build_dir=/scratch/local/ljjacobson/build/clang-5.0
-  gcc_root=/home/ljjacobson/opt/gcc-6/gcc-6.4.0
+  gcc_root=/home/ljjacobson/opt/gcc-7/gcc-7.2.0
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
   install_dir=/groupspace/cnerg/users/jacobson/opt/clang-5.0
