@@ -48,7 +48,11 @@ fi
 install_mcnp5=true
 install_mcnp6=true
 install_fluka=true
-install_geant4=true
+if [[ ${compiler} == "gcc-4"* ]] || [ ${compiler} == "gcc-5" ]; then
+  install_geant4=false
+else
+  install_geant4=true
+fi
 install_astyle=true
 
 cmake  --version

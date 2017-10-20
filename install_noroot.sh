@@ -7,6 +7,7 @@
 # gcc-6      compiled  compiled
 # gcc-7      compiled  compiled
 # clang-3.4  native    -
+# clang-4.0  -         compiled
 # clang-5.0  -         compiled
 # intel-13   module    -
 # intel-16   module    -
@@ -99,16 +100,14 @@ fi
 install_mcnp5=true
 install_mcnp6=true
 install_fluka=false
-if [ ${compiler} == "gcc-4.8" ] ||
-   [ ${compiler} == "gcc-4.9" ] ||
-   [ ${compiler} == "gcc-5"   ] ||
-   [ ${compiler} == "gcc-6"   ] ||
-   [ ${compiler} == "gcc-7"   ]; then
-  install_geant4=true
-else
+if [[ ${compiler} == "gcc-4"* ]] || [ ${compiler} == "gcc-5" ]; then
   install_geant4=false
+elif [[ ${compiler} == "intel"* ]] && [[ ${HOSTNAME} == "aci"* ]]; then
+  install_geant4=false
+else
+  install_geant4=true
 fi
-if [[ ${compiler} == "intel"* ]]; then
+if [[ ${compiler} == "intel"* ]] && [[ ${HOSTNAME} == "aci"* ]]; then
   install_astyle=false
 else
   install_astyle=true
