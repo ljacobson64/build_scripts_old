@@ -7,10 +7,10 @@ gmp_version=6.1.2
 mpfr_version=3.1.5
 mpc_version=1.0.3
 gcc_version=6.4.0
-python_version=2.7.13
+python_version=2.7.14
 hdf5_version=1.8.13
 moab_version=4.9.2
-setuptools_version=36.2.7
+setuptools_version=36.6.0
 pip_version=9.0.1
 
 jobs=`grep -c processor /proc/cpuinfo`
@@ -112,7 +112,7 @@ export LD_LIBRARY_PATH=${install_dir}/moab-${moab_version}/lib:${LD_LIBRARY_PATH
 
 # Build setuptools and pip
 cd ${build_dir}
-wget https://pypi.python.org/packages/07/a0/11d3d76df54b9701c0f7bf23ea9b00c61c5e14eb7962bb29aed866a5844e/setuptools-${setuptools_version}.zip
+wget https://pypi.python.org/packages/45/29/8814bf414e7cd1031e1a3c8a4169218376e284ea2553cc0822a6ea1c2d78/setuptools-${setuptools_version}.zip
 unzip setuptools-${setuptools_version}.zip
 cd setuptools-${setuptools_version}
 python setup.py install --user
