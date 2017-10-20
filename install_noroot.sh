@@ -62,7 +62,7 @@ if [[ ${compiler} == "gcc"* ]]; then
   FC=`which gfortran`
 elif [[ ${compiler} == "clang"* ]]; then
   if [[ ${HOSTNAME} == "aci"* ]]; then
-    gcc_root=/home/ljjacobson/opt/gcc-6/gcc-6.4.0
+    gcc_root=/home/ljjacobson/opt/gcc-7/gcc-7.2.0
     PATH=${gcc_root}/bin:${PATH}
     LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
   fi
