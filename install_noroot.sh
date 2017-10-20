@@ -67,7 +67,8 @@ elif [[ ${compiler} == "clang"* ]]; then
     PATH=${gcc_root}/bin:${PATH}
     LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
   fi
-  if [ ${compiler} == "clang-5.0" ]; then clang_root=${install_dir}/llvm-5.0.0
+  if   [ ${compiler} == "clang-4.0" ]; then clang_root=${install_dir}/llvm-4.0.1
+  elif [ ${compiler} == "clang-5.0" ]; then clang_root=${install_dir}/llvm-5.0.0
   else unknown_compiler
   fi
   PATH=${clang_root}/bin:${PATH}
