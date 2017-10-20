@@ -2,15 +2,11 @@
 
 #            ACI       TUX
 # gcc-4.4    native    -
-# gcc-4.7    -         -
-# gcc-4.8    -         -
 # gcc-4.9    -         native
-# gcc-5      -         -
+# gcc-5      compiled  compiled
 # gcc-6      compiled  compiled
 # gcc-7      compiled  compiled
-# clang-3.0  -         native
 # clang-3.4  native    -
-# clang-4.0  -         -
 # clang-5.0  -         compiled
 # intel-13   module    -
 # intel-16   module    -
@@ -85,10 +81,7 @@ elif [[ ${compiler} == "intel"* ]]; then
     else unknown_compiler
     fi
   elif [[ ${HOSTNAME} == "tux"* ]]; then
-    if   [ ${compiler} == "intel-12" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2011_sp1.13.367
-    elif [ ${compiler} == "intel-13" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2013.5.192
-    elif [ ${compiler} == "intel-14" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2013_sp1.6.214
-    elif [ ${compiler} == "intel-15" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2015.6.233
+    if   [ ${compiler} == "intel-15" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2015.6.233
     elif [ ${compiler} == "intel-16" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2016.4.258/linux
     elif [ ${compiler} == "intel-17" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2017.4.196/linux
     else unknown_compiler

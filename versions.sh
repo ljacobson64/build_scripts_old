@@ -3,7 +3,7 @@
 export        gmp_version=6.1.2
 export       mpfr_version=3.1.5
 export        mpc_version=1.0.3
-export        gcc_version=6.4.0   # 4.4.7  4.5.4  4.6.4  4.7.4  4.8.5  4.9.4  5.5.0  6.4.0  7.2.0
+export        gcc_version=7.2.0   # 4.4.7  4.5.4  4.6.4  4.7.4  4.8.5  4.9.4  5.5.0  6.4.0  7.2.0
 
 export    openmpi_version=1.10.7  # 1.6.5  1.8.8  1.10.7
 export      mpich_version=3.2     # 3.0.4  3.1.4  3.2

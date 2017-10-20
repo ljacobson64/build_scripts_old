@@ -30,7 +30,7 @@ elif [[ ${compiler} == "clang"* ]]; then
   clang_version_major=${compiler:6}
   CC=`which clang-${clang_version_major}`
   CXX=`which clang++-${clang_version_major}`
-  FC=`which gfortran-6`
+  FC=`which gfortran-7`
 elif [[ ${compiler} == "intel"* ]]; then
   if   [ ${compiler} == "intel-15" ]; then intel_root=/opt/intel/composer_xe_2015.6.233
   elif [ ${compiler} == "intel-16" ]; then intel_root=/opt/intel/compilers_and_libraries_2016.4.258/linux
