@@ -303,15 +303,25 @@ function build_moab() {
   if [[ ${with_cgm} == "true" ]]; then folder=${name}-${version}-cgm-${cgm_version}
   else folder=${name}-${version}
   fi
-  if [[ ${version} == "master" ]]; then
-    repo=https://bitbucket.org/ljacobson64/${name}
-    branch=master-fix-intel
-  elif [[ ${version} == "5.0" ]]; then
-    repo=https://bitbucket.org/ljacobson64/${name}
-    branch=Version5.0-fix-intel
+  if [[ ${compiler} == "intel"* ]]; then
+    if [[ ${version} == "master" ]]; then
+      repo=https://bitbucket.org/ljacobson64/${name}
+      branch=master-fix-intel
+    elif [[ ${version} == "5.0" ]]; then
+      repo=https://bitbucket.org/ljacobson64/${name}
+      branch=Version5.0-fix-intel
+    else
+      repo=https://bitbucket.org/fathomteam/${name}
+      branch=Version${version}
+    fi
   else
-    repo=https://bitbucket.org/fathomteam/${name}
-    branch=Version${version}
+    if [[ ${version} == "master" ]]; then
+      repo=https://bitbucket.org/fathomteam/${name}
+      branch=master
+    else
+      repo=https://bitbucket.org/fathomteam/${name}
+      branch=Version${version}
+    fi
   fi
 
   cd ${build_dir}
