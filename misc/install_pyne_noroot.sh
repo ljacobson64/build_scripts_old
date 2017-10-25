@@ -50,6 +50,17 @@ export LD_LIBRARY_PATH=${MOAB_DIR}/lib:${LD_LIBRARY_PATH}
 
 mkdir -p ${build_dir}
 
+# Build setuptools
+if [[ "${HOSTNAME}" == "aci"* ]]; then
+  cd ${build_dir}
+  tarball=setuptools-${setuptools_version}.zip
+  url=https://pypi.python.org/packages/45/29/8814bf414e7cd1031e1a3c8a4169218376e284ea2553cc0822a6ea1c2d78/${tarball}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  unzip ${dist_dir}/${tarball}
+  cd setuptools-${setuptools_version}
+  python setup.py install --user
+fi
+
 # Build pip
 cd ${build_dir}
 tarball=pip-${pip_version}.tar.gz
@@ -58,7 +69,7 @@ if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
 tar -xzvf ${dist_dir}/${tarball}
 cd pip-${pip_version}
 python setup.py install --user
-cd ..
+
 export PATH=${HOME}/.local/bin:${PATH}
 
 # Install some python packages
