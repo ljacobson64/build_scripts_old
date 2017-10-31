@@ -85,7 +85,7 @@ elif [[ ${compiler} == "intel"* ]]; then
   elif [[ ${HOSTNAME} == "tux"* ]]; then
     if   [ ${compiler} == "intel-15" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/composer_xe_2015.6.233
     elif [ ${compiler} == "intel-16" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2016.4.258/linux
-    elif [ ${compiler} == "intel-17" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2017.4.196/linux
+    elif [ ${compiler} == "intel-17" ]; then intel_root=/groupspace/cnerg/users/jacobson/intel/compilers_and_libraries_2017.5.239/linux
     else unknown_compiler
     fi
   fi
