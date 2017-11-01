@@ -100,10 +100,10 @@ fi
 
 install_mcnp5=true
 install_mcnp6=true
-if [[ ${compiler} == "gcc-4"* ]] || [ ${compiler} == "gcc-5" ]; then
-  install_fluka=false
-  install_geant4=false
-elif [[ ${compiler} == "intel"* ]] && [[ ${HOSTNAME} == "aci"* ]]; then
+if [[ [[ ${compiler} == "gcc-4"* ]] ||
+      [[ ${compiler} == "gcc-5"  ]] ||
+      [[ ${compiler} == "intel"* ]] ]] &&
+   [[ ${HOSTNAME} == "aci"* ]]; then
   install_fluka=false
   install_geant4=false
 else
