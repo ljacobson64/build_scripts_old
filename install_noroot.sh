@@ -100,18 +100,15 @@ fi
 
 install_mcnp5=true
 install_mcnp6=true
-install_fluka=false
 if [[ ${compiler} == "gcc-4"* ]] || [ ${compiler} == "gcc-5" ]; then
+  install_fluka=false
   install_geant4=false
 elif [[ ${compiler} == "intel"* ]] && [[ ${HOSTNAME} == "aci"* ]]; then
+  install_fluka=false
   install_geant4=false
 else
+  install_fluka=true
   install_geant4=true
-fi
-if [[ ${compiler} == "intel"* ]] && [[ ${HOSTNAME} == "aci"* ]]; then
-  install_astyle=false
-else
-  install_astyle=true
 fi
 
 cmake  --version
