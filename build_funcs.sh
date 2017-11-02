@@ -473,25 +473,29 @@ function build_dagmc() {
   ln -snf ${name} src
 
   if [[ ${install_mcnp5} == "true" ]]; then
-    cd ${name}/mcnp/mcnp5
+    cd ${name}/src/mcnp/mcnp5
     tar -xzvf ${dist_dir}/${mcnp5_tarball} --strip-components=1
     patch -p0 < patch/dagmc.${mcnp5_version}.patch
-    cd ../../..
+    cd ../../../..
   fi
   if [[ ${install_mcnp6} == "true" ]]; then  
-    cd ${name}/mcnp/mcnp6
+    cd ${name}/src/mcnp/mcnp6
     tar -xzvf ${dist_dir}/${mcnp6_tarball} --strip-components=1
     patch -p0 < patch/dagmc.${mcnp6_version}.patch
-    cd ../../..
+    cd ../../../..
   fi
   if [[ ${install_fluka} == "true" ]]; then  
     if [ ! -x ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka.orig ]; then
-      patch -Nb ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka ${name}/fluka/rfluka.patch
+      patch -Nb ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka ${name}/src/fluka/rfluka.patch
     fi
   fi
   cd bld
 
   cmake_string=
+
+  cmake_string+=" -DHDF5_ROOT=${install_dir}/hdf5-${hdf5_version}"
+  cmake_string+=" -DMOAB_ROOT=${install_dir}/moab-${moab_version}"
+
   if [[ ${install_mcnp5} == "true" ]]; then
     cmake_string+=" -DBUILD_MCNP5=ON"
     cmake_string+=" -DMCNP5_PLOT=ON"
@@ -515,7 +519,7 @@ function build_dagmc() {
   if [[ ${install_astyle} == "false" ]]; then
     cmake_string+=" -DBUILD_ASTYLE=OFF"
   fi
-  #cmake_string+=" -DBUILD_STATIC=ON"
+  #cmake_string+=" -DBUILD_STATIC_EXE=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
   cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
@@ -523,15 +527,8 @@ function build_dagmc() {
 
   PATH_orig=${PATH}
   LDPATH_orig=${LD_LIBRARY_PATH}
-
   PATH=${install_dir}/openmpi-${openmpi_version}/bin:${PATH}
-  PATH=${install_dir}/hdf5-${hdf5_version}/bin:${PATH}
   LD_LIBRARY_PATH=${install_dir}/openmpi-${openmpi_version}/lib:${LD_LIBRARY_PATH}
-  LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
-  LD_LIBRARY_PATH=${install_dir}/moab-${moab_version}/lib:${LD_LIBRARY_PATH}
-  if [[ ${install_geant4} == "true" ]]; then
-    LD_LIBRARY_PATH=${install_dir}/geant4-${geant4_version}/lib:${LD_LIBRARY_PATH}
-  fi
 
   cmake ../src ${cmake_string}
   make -j ${jobs}
