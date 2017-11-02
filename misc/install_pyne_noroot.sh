@@ -83,7 +83,7 @@ pip install --user --upgrade cython \
 
 # Build pyne
 cd ${build_dir}
-git clone https://github.com/ljacobson64/pyne -b fix_install_path
+git clone https://github.com/pyne/pyne -b develop
 cd pyne
 python setup.py -DCMAKE_C_COMPILER=${CC} \
                 -DCMAKE_CXX_COMPILER=${CXX} \

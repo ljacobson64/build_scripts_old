@@ -614,27 +614,27 @@ function build_alara() {
 function build_pyne() {
   name=pyne
   folder=${name}
-  repo=https://github.com/ljacobson64/${name}
-  branch=dagmc_singleton_support
+  repo=https://github.com/pyne/${name}
+  branch=develop
 
   cd ${build_dir}
   mkdir -p ${folder}
   cd ${folder}
   git clone $repo -b ${branch} --single-branch
-  ln -snf ${name} src
-  mkdir -p ${install_dir}/${folder}/lib/python2.7/site-packages
   cd ${name}
 
   setup_string=
-  setup_string+=" -DMOAB_LIBRARY=${install_dir}/moab-${moab_version}/lib/libMOAB.so"
-  setup_string+=" -DMOAB_INCLUDE_DIR=${install_dir}/moab-${moab_version}/include"
   setup_string+=" -DCMAKE_C_COMPILER=${CC}"
   setup_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   setup_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
   if [[ $(basename $CXX) == "icpc" ]]; then
     setup_string+=" -DCMAKE_BUILD_TYPE=Debug"
+  else
+    setup_string+=" -DCMAKE_BUILD_TYPE=Release"
   fi
   setup_string_2=
+  setup_string_2+=" --hdf5=${install_dir}/hdf5-${hdf5_version}"
+  setup_string_2+=" --moab=${install_dir}/moab-4.9.1"
   setup_string_2+=" --prefix=${install_dir}/${folder}"
 
   LDPATH_orig=${LD_LIBRARY_PATH}
@@ -642,9 +642,12 @@ function build_pyne() {
   LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/moab-${moab_version}/lib:${LD_LIBRARY_PATH}
   PYTHONPATH=${install_dir}/${folder}/lib/python2.7/site-packages:${PYTHONPATH}
+
   python setup.py ${setup_string} install ${setup_string_2} -j ${jobs}
   cd ..
   ${install_dir}/${folder}/bin/nuc_data_make
+  chmod 640 ${install_dir}/${folder}/lib/python2.7/site-packages/${name}/nuc_data.h5
+
   LD_LIBRARY_PATH=${LDPATH_orig}
   PYTHONPATH=${PPATH_orig}
 }
