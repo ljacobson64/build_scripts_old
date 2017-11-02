@@ -398,6 +398,7 @@ function build_mcnp() {
   cmake ../src ${cmake_string} -DMPI_BUILD=ON
   make -j ${jobs}
   make install
+  chmod 750 ${install_dir}/${folder}/bin/mcnp*
   PATH=${PATH_orig}
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
@@ -531,15 +532,11 @@ function build_dagmc() {
   if [[ ${install_geant4} == "true" ]]; then
     LD_LIBRARY_PATH=${install_dir}/geant4-${geant4_version}/lib:${LD_LIBRARY_PATH}
   fi
-  if [[ ${install_fluka} == "true" ]]; then  
-    FLUFOR=$(basename $FC)
-    FLUPRO=${install_dir}/fluka-${fluka_version}/bin
-    FLUDAG=${install_dir}/${folder}/bin
-  fi
 
   cmake ../src ${cmake_string}
   make -j ${jobs}
   make install
+  chmod 750 ${install_dir}/${folder}/bin/mcnp*
 
   PATH=${PATH_orig}
   LD_LIBRARY_PATH=${LDPATH_orig}
