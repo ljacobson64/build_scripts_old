@@ -507,7 +507,7 @@ function build_dagmc() {
     cmake_string+=" -DMCNP6_DATAPATH=${DATAPATH}"
   fi
   cmake_string+=" -DMPI_BUILD=ON"
-  #cmake_string+=" -DOPENMP_BUILD=ON"
+  cmake_string+=" -DOPENMP_BUILD=ON"
   if [[ ${install_geant4} == "true" ]]; then
     cmake_string+=" -DBUILD_GEANT4=ON"
     cmake_string+=" -DGEANT4_DIR=${install_dir}/geant4-${geant4_version}"
