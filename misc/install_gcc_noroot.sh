@@ -36,7 +36,7 @@ cd gcc-${version}
 tarball=gcc-${version}.tar.gz
 url=http://www.netgull.com/gcc/releases/gcc-${version}/${tarball}
 if [ ! -f ${dist_dir}/gcc/${tarball} ]; then wget ${url} -P ${dist_dir}/gcc; fi
-tar -xzvf ${dist_dir}/${tarball}
+tar -xzvf ${dist_dir}/gcc/${tarball}
 ln -snf gcc-${version} src
 cd gcc-${version}
 
