@@ -235,12 +235,12 @@ function build_cgm() {
   config_string+=" --enable-optimize"
   config_string+=" --enable-shared"
   config_string+=" --disable-debug"
-  config_string+=" --with-cubit=${install_dir}/cubit-${cgm_version}"
+  config_string+=" --with-cubit=${native_dir}/cubit-${cgm_version}"
   config_string+=" --prefix=${install_dir}/${folder}"
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   LDPATH_orig=${LD_LIBRARY_PATH}
-  LD_LIBRARY_PATH=${install_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
   ../src/configure ${config_string}
   make -j ${jobs}
   make install
@@ -308,7 +308,7 @@ function build_moab() {
   LDPATH_orig=${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
   if [[ ${with_cgm} == "true" ]]; then
-    LD_LIBRARY_PATH=${install_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
+    LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
     LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   fi
   ../src/configure ${config_string}
@@ -531,7 +531,7 @@ function build_mcnp2cad() {
   if [ ! -f /usr/lib/libarmadillo.so ]; then
     LD_LIBRARY_PATH=${install_dir}/armadillo-${armadillo_version}/lib:${LD_LIBRARY_PATH}
   fi
-  LD_LIBRARY_PATH=${install_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   make -j ${jobs} ${make_string}
   mkdir -p ${install_dir}/${folder}/bin

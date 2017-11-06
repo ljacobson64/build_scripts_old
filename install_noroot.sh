@@ -20,12 +20,12 @@ shift
 jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ ${HOSTNAME} == "aci"* ]]; then
-  compiler_dir=/home/ljjacobson/opt/native
+  native_dir=/home/ljjacobson/opt/native
   install_dir=/home/ljjacobson/opt/${compiler}
   build_dir=/scratch/local/ljjacobson/build/${compiler}
   mcnp_dir=/home/ljjacobson/MCNP/MCNP_CODE/bin
 elif [[ ${HOSTNAME} == "tux"* ]]; then
-  compiler_dir=/groupspace/cnerg/users/jacobson/opt/native
+  native_dir=/groupspace/cnerg/users/jacobson/opt/native
   install_dir=/groupspace/cnerg/users/jacobson/opt/${compiler}
   build_dir=/local.hd/cnergg/jacobson/build/${compiler}
   mcnp_dir=/groupspace/cnerg/users/jacobson/MCNP/MCNP_CODE/bin
@@ -38,11 +38,11 @@ if [ ${compiler} == "native" ]; then
   CXX=`which g++`
   FC=`which gfortran`
 elif [[ ${compiler} == "gcc"* ]]; then
-  if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${compiler_dir}/gcc-4.8.5
-  elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${compiler_dir}/gcc-4.9.4
-  elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${compiler_dir}/gcc-5.5.0
-  elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${compiler_dir}/gcc-6.4.0
-  elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${compiler_dir}/gcc-7.2.0
+  if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${native_dir}/gcc-4.8.5
+  elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${native_dir}/gcc-4.9.4
+  elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${native_dir}/gcc-5.5.0
+  elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${native_dir}/gcc-6.4.0
+  elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${native_dir}/gcc-7.2.0
   else unknown_compiler
   fi
   PATH=${gcc_root}/bin:${PATH}
@@ -56,8 +56,8 @@ elif [[ ${compiler} == "clang"* ]]; then
     PATH=${gcc_root}/bin:${PATH}
     LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
   fi
-  if   [ ${compiler} == "clang-4.0" ]; then clang_root=${compiler_dir}/llvm-4.0.1
-  elif [ ${compiler} == "clang-5.0" ]; then clang_root=${compiler_dir}/llvm-5.0.0
+  if   [ ${compiler} == "clang-4.0" ]; then clang_root=${native_dir}/llvm-4.0.1
+  elif [ ${compiler} == "clang-5.0" ]; then clang_root=${native_dir}/llvm-5.0.0
   else unknown_compiler
   fi
   PATH=${clang_root}/bin:${PATH}
