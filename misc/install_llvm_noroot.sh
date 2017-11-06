@@ -17,13 +17,18 @@ function setup_project() {
 set -e
 umask 0022
 
-version=5.0.0
+version=$1
+if [ -z ${version} ]; then
+  echo "Usage: ./install_llvm_noroot.sh <llvm_version>"
+  exit
+fi
+
 jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
-  install_dir=/home/ljjacobson/opt/native
-  build_dir=/scratch/local/ljjacobson/build/native
+  install_dir=/home/ljjacobson/opt/gcc-7
+  build_dir=/scratch/local/ljjacobson/build/gcc-7
   gcc_root=/home/ljjacobson/opt/native/gcc-7.2.0
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
@@ -58,12 +63,13 @@ fi
 CC=`which gcc`
 CXX=`which g++`
 
+ln -s llvm src
+cd bld
+
 cmake  --version
 ${CC}  --version
 ${CXX} --version
 
-ln -s llvm src
-cd bld
 cmake ../src -DCMAKE_C_COMPILER=${CC} \
              -DCMAKE_CXX_COMPILER=${CXX} \
              -DCMAKE_BUILD_TYPE=Release \

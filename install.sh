@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# gcc:   4.4, 4.6, 4.7, 4.8, 4.9, 5, 6, 7
-# clang: 3.5, 3.6, 3.7, 3.8, 3.9, 4.0
-# intel: 15, 16, 17
-
 function unknown_compiler() {
   echo "Unknown compiler = ${compiler}"
   exit

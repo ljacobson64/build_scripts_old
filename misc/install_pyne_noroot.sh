@@ -18,27 +18,18 @@ if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
   install_dir=/home/ljjacobson/opt/gcc-7
   build_dir=/scratch/local/ljjacobson/build/gcc-7
-  PATH=${install_dir}/gcc-${gcc_version}/bin:${PATH}
-  LD_LIBRARY_PATH=${install_dir}/gcc-${gcc_version}/lib64
+  PATH=/home/ljjacobson/opt/native/gcc-${gcc_version}/bin:${PATH}
+  LD_LIBRARY_PATH=/home/ljjacobson/opt/native/gcc-${gcc_version}/lib64
   PATH=${install_dir}/python-${python_version}/bin:${PATH}
   LD_LIBRARY_PATH=${install_dir}/python-${python_version}/lib:${LD_LIBRARY_PATH}
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
-  install_dir=/groupspace/cnerg/users/jacobson/opt/gcc-4.9
-  build_dir=/local.hd/cnergg/jacobson/build/gcc-4.9
+  install_dir=/groupspace/cnerg/users/jacobson/opt/native
+  build_dir=/local.hd/cnergg/jacobson/build/native
 else
   echo "Unknown hostname"
   exit
 fi
-
-CC=`which gcc`
-CXX=`which g++`
-FC=`which gfortran`
-
-cmake  --version
-${CC}  --version
-${CXX} --version
-${FC}  --version
 
 HDF5_DIR=${install_dir}/hdf5-${hdf5_version}
 PATH=${HDF5_DIR}/bin:${PATH}
@@ -49,6 +40,15 @@ PATH=${MOAB_DIR}/bin:${PATH}
 LD_LIBRARY_PATH=${MOAB_DIR}/lib:${LD_LIBRARY_PATH}
 
 mkdir -p ${build_dir}
+
+CC=`which gcc`
+CXX=`which g++`
+FC=`which gfortran`
+
+cmake  --version
+${CC}  --version
+${CXX} --version
+${FC}  --version
 
 # Build setuptools
 if [[ "${HOSTNAME}" == "aci"* ]]; then
@@ -73,13 +73,7 @@ python setup.py install --user
 PATH=${HOME}/.local/bin:${PATH}
 
 # Install some python packages
-pip install --user --upgrade cython \
-                             nose \
-                             numpy \
-                             pytaps \
-                             scipy \
-                             tables \
-                             setuptools
+pip install --user --upgrade cython nose numpy pytaps scipy tables setuptools
 
 # Build pyne
 cd ${build_dir}
@@ -100,13 +94,8 @@ PYTHONPATH=${install_dir}/pyne/lib/python2.7/site-packages:${PYTHONPATH}
 nuc_data_make
 
 # Install some more python packages
-pip install --user --upgrade cloud_sptheme \
-                             nbconvert \
-                             numpydoc \
-                             prettytable \
-                             sphinx \
-                             sphinxcontrib-bibtex
+pip install --user --upgrade cloud_sptheme nbconvert numpydoc prettytable sphinx sphinxcontrib-bibtex
 
-# Build Pyne documentation
+# Build pyne documentation
 cd ${build_dir}/pyne/docs
 make html

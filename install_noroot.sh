@@ -1,18 +1,5 @@
 #!/bin/bash
 
-#            ACI       TUX
-# gcc-4.4    native    -
-# gcc-4.9    -         native
-# gcc-5      compiled  compiled
-# gcc-6      compiled  compiled
-# gcc-7      compiled  compiled
-# clang-3.4  native    -
-# clang-4.0  -         compiled
-# clang-5.0  -         compiled
-# intel-13   module    -
-# intel-16   module    -
-# intel-17   -         user
-
 function unknown_hostname() {
   echo "Unknown hostname = ${HOSTNAME}"
   exit
@@ -33,12 +20,12 @@ shift
 jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ ${HOSTNAME} == "aci"* ]]; then
-  gcc_version_native=4.4
+  compiler_dir=/home/ljjacobson/opt/native
   install_dir=/home/ljjacobson/opt/${compiler}
   build_dir=/scratch/local/ljjacobson/build/${compiler}
   mcnp_dir=/home/ljjacobson/MCNP/MCNP_CODE/bin
 elif [[ ${HOSTNAME} == "tux"* ]]; then
-  gcc_version_native=4.9
+  compiler_dir=/groupspace/cnerg/users/jacobson/opt/native
   install_dir=/groupspace/cnerg/users/jacobson/opt/${compiler}
   build_dir=/local.hd/cnergg/jacobson/build/${compiler}
   mcnp_dir=/groupspace/cnerg/users/jacobson/MCNP/MCNP_CODE/bin
@@ -51,11 +38,11 @@ if [ ${compiler} == "native" ]; then
   CXX=`which g++`
   FC=`which gfortran`
 elif [[ ${compiler} == "gcc"* ]]; then
-  if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${install_dir}/gcc-4.8.5
-  elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${install_dir}/gcc-4.9.4
-  elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${install_dir}/gcc-5.5.0
-  elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${install_dir}/gcc-6.4.0
-  elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${install_dir}/gcc-7.2.0
+  if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${compiler_dir}/gcc-4.8.5
+  elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${compiler_dir}/gcc-4.9.4
+  elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${compiler_dir}/gcc-5.5.0
+  elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${compiler_dir}/gcc-6.4.0
+  elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${compiler_dir}/gcc-7.2.0
   else unknown_compiler
   fi
   PATH=${gcc_root}/bin:${PATH}
@@ -69,8 +56,8 @@ elif [[ ${compiler} == "clang"* ]]; then
     PATH=${gcc_root}/bin:${PATH}
     LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
   fi
-  if   [ ${compiler} == "clang-4.0" ]; then clang_root=${install_dir}/llvm-4.0.1
-  elif [ ${compiler} == "clang-5.0" ]; then clang_root=${install_dir}/llvm-5.0.0
+  if   [ ${compiler} == "clang-4.0" ]; then clang_root=${compiler_dir}/llvm-4.0.1
+  elif [ ${compiler} == "clang-5.0" ]; then clang_root=${compiler_dir}/llvm-5.0.0
   else unknown_compiler
   fi
   PATH=${clang_root}/bin:${PATH}
@@ -113,14 +100,14 @@ else
   install_geant4=true
 fi
 
+source versions.sh
+source build_funcs.sh
+mkdir -p ${build_dir}
+
 cmake  --version
 ${CC}  --version
 ${CXX} --version
 ${FC}  --version
-
-source versions.sh
-source build_funcs.sh
-mkdir -p ${build_dir}
 
 for package in "$@"; do
   if [[ ${package} == *"-"* ]]; then
