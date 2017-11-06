@@ -18,10 +18,10 @@ if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
   install_dir=/home/ljjacobson/opt/gcc-7
   build_dir=/scratch/local/ljjacobson/build/gcc-7
-  export PATH=${install_dir}/gcc-${gcc_version}/bin:${PATH}
-  export LD_LIBRARY_PATH=${install_dir}/gcc-${gcc_version}/lib64
-  export PATH=${install_dir}/python-${python_version}/bin:${PATH}
-  export LD_LIBRARY_PATH=${install_dir}/python-${python_version}/lib:${LD_LIBRARY_PATH}
+  PATH=${install_dir}/gcc-${gcc_version}/bin:${PATH}
+  LD_LIBRARY_PATH=${install_dir}/gcc-${gcc_version}/lib64
+  PATH=${install_dir}/python-${python_version}/bin:${PATH}
+  LD_LIBRARY_PATH=${install_dir}/python-${python_version}/lib:${LD_LIBRARY_PATH}
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
   install_dir=/groupspace/cnerg/users/jacobson/opt/gcc-4.9
@@ -40,13 +40,13 @@ ${CC}  --version
 ${CXX} --version
 ${FC}  --version
 
-export HDF5_DIR=${install_dir}/hdf5-${hdf5_version}
-export PATH=${HDF5_DIR}/bin:${PATH}
-export LD_LIBRARY_PATH=${HDF5_DIR}/lib:${LD_LIBRARY_PATH}
+HDF5_DIR=${install_dir}/hdf5-${hdf5_version}
+PATH=${HDF5_DIR}/bin:${PATH}
+LD_LIBRARY_PATH=${HDF5_DIR}/lib:${LD_LIBRARY_PATH}
 
-export MOAB_DIR=${install_dir}/moab-${moab_version}
-export PATH=${MOAB_DIR}/bin:${PATH}
-export LD_LIBRARY_PATH=${MOAB_DIR}/lib:${LD_LIBRARY_PATH}
+MOAB_DIR=${install_dir}/moab-${moab_version}
+PATH=${MOAB_DIR}/bin:${PATH}
+LD_LIBRARY_PATH=${MOAB_DIR}/lib:${LD_LIBRARY_PATH}
 
 mkdir -p ${build_dir}
 
@@ -70,7 +70,7 @@ tar -xzvf ${dist_dir}/${tarball}
 cd pip-${pip_version}
 python setup.py install --user
 
-export PATH=${HOME}/.local/bin:${PATH}
+PATH=${HOME}/.local/bin:${PATH}
 
 # Install some python packages
 pip install --user --upgrade cython \
@@ -95,8 +95,8 @@ python setup.py -DCMAKE_C_COMPILER=${CC} \
                 --prefix=${install_dir}/pyne \
                 -j${jobs}
 cd ..
-export PATH=${install_dir}/pyne/bin:${PATH}
-export PYTHONPATH=${install_dir}/pyne/lib/python2.7/site-packages:${PYTHONPATH}
+PATH=${install_dir}/pyne/bin:${PATH}
+PYTHONPATH=${install_dir}/pyne/lib/python2.7/site-packages:${PYTHONPATH}
 nuc_data_make
 
 # Install some more python packages

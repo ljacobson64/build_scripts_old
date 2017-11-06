@@ -46,18 +46,20 @@ else
   unknown_hostname
 fi
 
-if [[ ${compiler} == "gcc"* ]]; then
-  if [ ! ${compiler} == "gcc-${gcc_version_native}" ]; then
-    if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${install_dir}/gcc-4.8.5
-    elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${install_dir}/gcc-4.9.4
-    elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${install_dir}/gcc-5.5.0
-    elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${install_dir}/gcc-6.4.0
-    elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${install_dir}/gcc-7.2.0
-    else unknown_compiler
-    fi
-    PATH=${gcc_root}/bin:${PATH}
-    LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
+if [ ${compiler} == "native" ]; then
+  CC=`which gcc`
+  CXX=`which g++`
+  FC=`which gfortran`
+elif [[ ${compiler} == "gcc"* ]]; then
+  if   [ ${compiler} == "gcc-4.8" ]; then gcc_root=${install_dir}/gcc-4.8.5
+  elif [ ${compiler} == "gcc-4.9" ]; then gcc_root=${install_dir}/gcc-4.9.4
+  elif [ ${compiler} == "gcc-5"   ]; then gcc_root=${install_dir}/gcc-5.5.0
+  elif [ ${compiler} == "gcc-6"   ]; then gcc_root=${install_dir}/gcc-6.4.0
+  elif [ ${compiler} == "gcc-7"   ]; then gcc_root=${install_dir}/gcc-7.2.0
+  else unknown_compiler
   fi
+  PATH=${gcc_root}/bin:${PATH}
+  LD_LIBRARY_PATH=${gcc_root}/lib64:${LD_LIBRARY_PATH}
   CC=`which gcc`
   CXX=`which g++`
   FC=`which gfortran`

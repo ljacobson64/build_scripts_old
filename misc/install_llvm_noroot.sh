@@ -22,13 +22,13 @@ jobs=`grep -c processor /proc/cpuinfo`
 
 if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
-  install_dir=/home/ljjacobson/opt/clang-5.0
-  build_dir=/scratch/local/ljjacobson/build/clang-5.0
-  gcc_root=/home/ljjacobson/opt/gcc-7/gcc-7.2.0
+  install_dir=/home/ljjacobson/opt/native
+  build_dir=/scratch/local/ljjacobson/build/native
+  gcc_root=/home/ljjacobson/opt/native/gcc-7.2.0
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
-  install_dir=/groupspace/cnerg/users/jacobson/opt/clang-5.0
-  build_dir=/local.hd/cnergg/jacobson/build/clang-5.0
+  install_dir=/groupspace/cnerg/users/jacobson/opt/native
+  build_dir=/local.hd/cnergg/jacobson/build/native
 else
   echo "Unknown hostname"
   exit
