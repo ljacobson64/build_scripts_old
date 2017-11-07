@@ -592,7 +592,7 @@ function build_pyne() {
   PATH_orig=${PATH}
   LDPATH_orig=${LD_LIBRARY_PATH}
   PPATH_orig=${PYTHONPATH}
-  if [[ ${HOSTNAME} == "aci"* ]] || [[ ${HOSTNAME} == "tux"* ]]; then
+  if [[ ${HOSTNAME} == "aci"* ]]; then
     PATH=${install_dir}/python-${python_version}/bin:${PATH}
     LD_LIBRARY_PATH=${install_dir}/python-${python_version}/lib:${LD_LIBRARY_PATH}
   fi
