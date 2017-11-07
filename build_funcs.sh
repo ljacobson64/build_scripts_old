@@ -589,17 +589,24 @@ function build_pyne() {
   setup_string_2+=" --moab=${install_dir}/moab-4.9.1"
   setup_string_2+=" --prefix=${install_dir}/${folder}"
 
+  PATH_orig=${PATH}
   LDPATH_orig=${LD_LIBRARY_PATH}
   PPATH_orig=${PYTHONPATH}
+  if [[ ${HOSTNAME} == "aci"* ]] || [[ ${HOSTNAME} == "tux"* ]]; then
+    PATH=${install_dir}/python-${python_version}/bin:${PATH}
+    LD_LIBRARY_PATH=${install_dir}/python-${python_version}/lib:${LD_LIBRARY_PATH}
+  fi
   LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
-  LD_LIBRARY_PATH=${install_dir}/moab-${moab_version}/lib:${LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=${install_dir}/moab-4.9.1/lib:${LD_LIBRARY_PATH}
   PYTHONPATH=${install_dir}/${folder}/lib/python2.7/site-packages:${PYTHONPATH}
 
+  python --version
   python setup.py ${setup_string} install ${setup_string_2} -j ${jobs}
   cd ..
   ${install_dir}/${folder}/bin/nuc_data_make
   chmod 640 ${install_dir}/${folder}/lib/python2.7/site-packages/${name}/nuc_data.h5
 
+  PATH=${PATH_orig}
   LD_LIBRARY_PATH=${LDPATH_orig}
   PYTHONPATH=${PPATH_orig}
 }
