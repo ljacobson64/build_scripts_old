@@ -610,30 +610,3 @@ function build_pyne() {
   LD_LIBRARY_PATH=${LDPATH_orig}
   PYTHONPATH=${PPATH_orig}
 }
-
-function build_advantg() {
-  name=advantg
-  version=${advantg_version}
-  folder=${name}-${version}
-  tarball=${name}-${version}-release.tgz
-  tar_f=${name}-${version}-release
-  
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  tar -xzvf ${dist_dir}/${tarball}
-  ln -snf ${tar_f} src
-  cd ${tar_f}/Installers
-
-  setup_string=
-  setup_string+=" --keep"
-  setup_string+=" --nox11"
-  setup_string+=" --"
-  setup_string+=" --no-prompts"
-  setup_string+=" --mcnp-executable=${mcnp_dir}/mcnp5"
-  #setup_string+=" --prefix=${HOME}/opt/precompiled/advantg-3.0.3"
-  setup_string+=" --prefix=/opt/advantg-3.0.3"
-
-  bash advantg-3.0.3-linux-x86_64-setup.sh ${setup_string}
-  cd ${build_dir}
-}

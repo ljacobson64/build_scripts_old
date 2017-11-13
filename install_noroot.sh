@@ -23,12 +23,10 @@ if [[ ${HOSTNAME} == "aci"* ]]; then
   native_dir=/home/ljjacobson/opt/native
   install_dir=/home/ljjacobson/opt/${compiler}
   build_dir=/scratch/local/ljjacobson/build/${compiler}
-  mcnp_dir=/home/ljjacobson/MCNP/MCNP_CODE/bin
 elif [[ ${HOSTNAME} == "tux"* ]]; then
   native_dir=/groupspace/cnerg/users/jacobson/opt/native
   install_dir=/groupspace/cnerg/users/jacobson/opt/${compiler}
   build_dir=/local.hd/cnergg/jacobson/build/${compiler}
-  mcnp_dir=/groupspace/cnerg/users/jacobson/MCNP/MCNP_CODE/bin
 else
   unknown_hostname
 fi

@@ -15,7 +15,6 @@ shift
 jobs=`grep -c processor /proc/cpuinfo`
 install_dir=${HOME}/opt/${compiler}
 build_dir=${HOME}/build/${compiler}
-mcnp_dir=/opt/MCNP/MCNP_CODE/bin
 
 if [[ ${compiler} == "gcc"* ]]; then
   gcc_version_major=${compiler:4}
