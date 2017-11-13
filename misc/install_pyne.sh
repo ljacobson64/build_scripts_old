@@ -5,8 +5,6 @@
 set -e
 umask 0022
 
-gcc_version=7.2.0
-python_version=2.7.14
 hdf5_version=1.8.13
 moab_version=4.9.1
 setuptools_version=36.6.0
@@ -18,18 +16,33 @@ if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
   install_dir=/home/ljjacobson/opt/gcc-7
   build_dir=/scratch/local/ljjacobson/build/gcc-7
-  PATH=/home/ljjacobson/opt/native/gcc-${gcc_version}/bin:${PATH}
-  LD_LIBRARY_PATH=/home/ljjacobson/opt/native/gcc-${gcc_version}/lib64
-  PATH=${install_dir}/python-${python_version}/bin:${PATH}
-  LD_LIBRARY_PATH=${install_dir}/python-${python_version}/lib:${LD_LIBRARY_PATH}
+
+  gcc_version=7.2.0
+  gcc_dir=/home/ljjacobson/opt/native/gcc-${gcc_version}
+  PATH=${gcc_dir}/bin:${PATH}
+  LD_LIBRARY_PATH=${gcc_dir}/lib64
+
+  python_version=2.7.14
+  python_dir=${install_dir}/python-${python_version}
+  PATH=${python_dir}/bin:${PATH}
+  LD_LIBRARY_PATH=${python_dir}/lib:${LD_LIBRARY_PATH}
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
   install_dir=/groupspace/cnerg/users/jacobson/opt/native
   build_dir=/local.hd/cnergg/jacobson/build/native
 else
-  echo "Unknown hostname"
-  exit
+  dist_dir=/home/lucas/dist
+  install_dir=/home/lucas/opt/native
+  build_dir=/home/lucas/build/native
 fi
+
+CC=`which gcc`
+CXX=`which g++`
+FC=`which gfortran`
+
+${CC}  --version
+${CXX} --version
+${FC}  --version
 
 HDF5_DIR=${install_dir}/hdf5-${hdf5_version}
 PATH=${HDF5_DIR}/bin:${PATH}
@@ -40,15 +53,6 @@ PATH=${MOAB_DIR}/bin:${PATH}
 LD_LIBRARY_PATH=${MOAB_DIR}/lib:${LD_LIBRARY_PATH}
 
 mkdir -p ${build_dir}
-
-CC=`which gcc`
-CXX=`which g++`
-FC=`which gfortran`
-
-cmake  --version
-${CC}  --version
-${CXX} --version
-${FC}  --version
 
 # Build setuptools
 if [[ "${HOSTNAME}" == "aci"* ]]; then

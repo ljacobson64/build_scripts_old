@@ -16,8 +16,10 @@ elif [[ "${HOSTNAME}" == "tux"* ]]; then
   build_dir=/local.hd/cnergg/jacobson/build/native
   mcnp_exe=/groupspace/cnerg/users/jacobson/MCNP/MCNP_CODE/bin/mcnp5
 else
-  echo "Unknown hostname"
-  exit
+  dist_dir=/home/lucas/dist
+  install_dir=/home/lucas/opt/native
+  build_dir=/home/lucas/build/native
+  mcnp_exe=/opt/MCNP/MCNP_CODE/bin/mcnp5
 fi
 
 mkdir -p ${build_dir}/advantg-${version}

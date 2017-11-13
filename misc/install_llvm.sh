@@ -18,7 +18,7 @@ umask 0022
 
 version=$1
 if [ -z ${version} ]; then
-  echo "Usage: ./install_llvm_noroot.sh <llvm_version>"
+  echo "Usage: ./install_llvm.sh <llvm_version>"
   exit
 fi
 
@@ -28,15 +28,28 @@ if [[ "${HOSTNAME}" == "aci"* ]]; then
   dist_dir=/home/ljjacobson/dist
   install_dir=/home/ljjacobson/opt/gcc-7
   build_dir=/scratch/local/ljjacobson/build/gcc-7
-  gcc_root=/home/ljjacobson/opt/native/gcc-7.2.0
+
+  gcc_version=7.2.0
+  gcc_dir=/home/ljjacobson/opt/native/gcc-${gcc_version}
+  PATH=${gcc_dir}/bin:${PATH}
+  LD_LIBRARY_PATH=${gcc_dir}/lib64
 elif [[ "${HOSTNAME}" == "tux"* ]]; then
   dist_dir=/groupspace/cnerg/users/jacobson/dist
   install_dir=/groupspace/cnerg/users/jacobson/opt/native
   build_dir=/local.hd/cnergg/jacobson/build/native
 else
-  echo "Unknown hostname"
-  exit
+  dist_dir=/home/lucas/dist
+  install_dir=/home/lucas/opt/native
+  build_dir=/home/lucas/build/native
 fi
+
+CC=`which gcc`
+CXX=`which g++`
+CMAKE=`which cmake`
+
+${CC}    --version
+${CXX}   --version
+${CMAKE} --version
 
 mkdir -p ${build_dir} ${dist_dir}/llvm
 cd ${build_dir}
@@ -55,23 +68,12 @@ setup_project llvm/projects          libunwind         libunwind
 setup_project llvm/projects          openmp            openmp
 setup_project llvm/projects          test-suite        test-suite
 
-if [[ "${HOSTNAME}" == "aci"* ]]; then
-  PATH=${gcc_root}/bin:${PATH}
-  LD_LIBRARY_PATH=${gcc_root}/lib64
-fi
-CC=`which gcc`
-CXX=`which g++`
-
 ln -s llvm src
 cd bld
 
-cmake  --version
-${CC}  --version
-${CXX} --version
-
-cmake ../src -DCMAKE_C_COMPILER=${CC} \
-             -DCMAKE_CXX_COMPILER=${CXX} \
-             -DCMAKE_BUILD_TYPE=Release \
-             -DCMAKE_INSTALL_PREFIX=${install_dir}/llvm-${version}
+${CMAKE} ../src -DCMAKE_C_COMPILER=${CC} \
+                -DCMAKE_CXX_COMPILER=${CXX} \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_INSTALL_PREFIX=${install_dir}/llvm-${version}
 make -j${jobs}
 make install

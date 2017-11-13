@@ -36,14 +36,8 @@ packages+=" geant4"
 packages+=" dagmc"
 packages+=" pyne"
 
-if [[ ${HOSTNAME} == "aci"* ]] || [[ ${HOSTNAME} == "tux"* ]]; then
-  install_script=install_noroot.sh
-else
-  install_script=install.sh
-fi
-
 for package in ${packages}; do
   for compiler in ${compilers}; do
-    ./${install_script} ${compiler} ${package}
+    ./install.sh ${compiler} ${package}
   done
 done

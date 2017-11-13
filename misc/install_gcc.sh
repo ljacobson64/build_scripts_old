@@ -5,7 +5,7 @@ umask 0022
 
 version=$1
 if [ -z ${version} ]; then
-  echo "Usage: ./install_gcc_noroot.sh <gcc_version>"
+  echo "Usage: ./install_gcc.sh <gcc_version>"
   exit
 fi
 
@@ -24,9 +24,18 @@ elif [[ "${HOSTNAME}" == "tux"* ]]; then
   install_dir=/groupspace/cnerg/users/jacobson/opt/native
   build_dir=/local.hd/cnergg/jacobson/build/native
 else
-  echo "Unknown hostname"
-  exit
+  dist_dir=/home/lucas/dist
+  install_dir=/home/lucas/opt/native
+  build_dir=/home/lucas/build/native
 fi
+
+CC=`which gcc`
+CXX=`which g++`
+FC=`which gfortran`
+
+${CC}  --version
+${CXX} --version
+${FC}  --version
 
 mkdir -p ${build_dir} ${dist_dir}/gcc
 cd ${build_dir}
@@ -57,14 +66,6 @@ ln -snf mpfr-${mpfr_version} mpfr
 ln -snf mpc-${mpc_version}   mpc
 
 cd ../bld
-
-CC=`which gcc`
-CXX=`which g++`
-FC=`which gfortran`
-
-${CC}  --version
-${CXX} --version
-${FC}  --version
 
 ../src/configure --prefix=${install_dir}/gcc-${version}
 make -j ${jobs}
