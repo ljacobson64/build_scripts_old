@@ -1,5 +1,32 @@
 #!/bin/bash
 
+function build_cmake() {
+  name=cmake
+  version=${cmake_version}
+  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
+  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  fi
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://cmake.org/files/v${version_major}/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
+  config_string+=" --prefix=${install_dir}/${folder}"
+
+  ../src/configure ${config_string}
+  make -j ${jobs}
+  make install
+}
+
 function build_openmpi() {
   name=openmpi
   version=${openmpi_version}
@@ -230,7 +257,7 @@ function build_cgm() {
   cd ${name}
   autoreconf -fi
   cd ../bld
-  
+
   config_string=
   config_string+=" --enable-optimize"
   config_string+=" --enable-shared"
@@ -407,6 +434,51 @@ function build_fluka() {
   #bash flutil/ldpmqmd
 }
 
+function build_talys() {
+  name=talys
+  version=1.8
+  folder=${name}-${version}
+  tarball_code=${name}${version}_code.tar.gz
+  tarball_data=${name}${version}_data.tar.gz
+  tar_f=${name}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  tar -xzvf ${dist_dir}/${name}/${tarball_code}
+  ln -snf ${tar_f}/source src
+
+  talyspath=`echo ${install_dir}/${folder}/ | sed 's/\//\\\\\//g'`
+  cd ${tar_f}/source
+  sed "s/ home='.*'/ home='${talyspath}'/" machine.f > machine_tmp.f
+  mv machine.f ../machine_orig.f
+  mv machine_tmp.f machine.f
+  rm -f CMakeLists.txt
+  echo "project(talys Fortran)"                   >> CMakeLists.txt
+  echo "cmake_minimum_required(VERSION 2.8)"      >> CMakeLists.txt
+  echo "set(CMAKE_BUILD_TYPE Release)"            >> CMakeLists.txt
+  echo "set(CMAKE_Fortran_FLAGS_RELEASE \"-O1\")" >> CMakeLists.txt
+  echo "file(GLOB SRC_FILES \"*.f\")"             >> CMakeLists.txt
+  echo "add_executable(talys \${SRC_FILES})"      >> CMakeLists.txt
+  echo "install(TARGETS talys DESTINATION bin)"   >> CMakeLists.txt
+  cd ../../bld
+
+  cmake_string=
+  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
+  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+
+  cmake ../src ${cmake_string}
+  make -j ${jobs}
+  make install
+
+  cd ${install_dir}/${folder}
+  if [ ${compiler} == "native" ]; then
+    tar -xzvf ${dist_dir}/${name}/${tarball_data}
+  else
+    ln -snf ${native_dir}/${folder}/${tar_f} .
+  fi
+}
+
 function build_dagmc() {
   if [[ ${dagmc_version} == *"moab-"* ]]; then
     moab_version=$(cut -d '-' -f2  <<< "${dagmc_version}")
@@ -436,13 +508,13 @@ function build_dagmc() {
     patch -p0 < patch/dagmc.${mcnp5_version}.patch
     cd ../../../..
   fi
-  if [[ ${install_mcnp6} == "true" ]]; then  
+  if [[ ${install_mcnp6} == "true" ]]; then
     cd ${name}/src/mcnp/mcnp6
     tar -xzvf ${dist_dir}/${mcnp6_tarball} --strip-components=1
     patch -p0 < patch/dagmc.${mcnp6_version}.patch
     cd ../../../..
   fi
-  if [[ ${install_fluka} == "true" ]]; then  
+  if [[ ${install_fluka} == "true" ]]; then
     if [ ! -x ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka.orig ]; then
       patch -Nb ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka ${name}/src/fluka/rfluka.patch
     fi

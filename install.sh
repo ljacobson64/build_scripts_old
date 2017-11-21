@@ -27,6 +27,7 @@ elif [[ ${HOSTNAME} == "tux"* ]]; then
   build_dir=/local.hd/cnergg/jacobson/build/${compiler}
   intel_root=/groupspace/cnerg/users/jacobson/intel
 else
+  umask 0002
   dist_dir=/home/lucas/dist
   native_dir=/home/lucas/opt/native
   install_dir=/home/lucas/opt/${compiler}
