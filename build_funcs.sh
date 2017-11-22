@@ -7,6 +7,7 @@
 # - cmake
 # - dagmc
 # - fluka
+# - gcc
 # - geant4
 # - hdf5
 # - lapack
@@ -120,8 +121,8 @@ function build_cgm() {
 function build_cmake() {
   name=cmake
   version=${cmake_version}
-  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
-  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  if   [ "${version:3:1}" == "." ]; then version_major=${version::3}
+  elif [ "${version:4:1}" == "." ]; then version_major=${version::4}
   fi
   folder=${name}-${version}
   tarball=${name}-${version}.tar.gz
@@ -153,7 +154,7 @@ function build_dagmc() {
   name=DAGMC
   folder=${name}-moab-${moab_version}
   repo=https://github.com/ljacobson64/${name}
-  if [[ ${moab_version} == "4.9.2" ]]; then branch=moab-${moab_version}
+  if [ ${moab_version} == "4.9.2" ]; then branch=moab-${moab_version}
   else branch=latest
   fi
   mcnp5_version=5.1.60
@@ -167,19 +168,19 @@ function build_dagmc() {
   git clone ${repo} -b ${branch} --single-branch
   ln -snf ${name} src
 
-  if [[ ${install_mcnp5} == "true" ]]; then
+  if [ ${install_mcnp5} == "true" ]; then
     cd ${name}/src/mcnp/mcnp5
     tar -xzvf ${dist_dir}/${mcnp5_tarball} --strip-components=1
     patch -p0 < patch/dagmc.${mcnp5_version}.patch
     cd ../../../..
   fi
-  if [[ ${install_mcnp6} == "true" ]]; then
+  if [ ${install_mcnp6} == "true" ]; then
     cd ${name}/src/mcnp/mcnp6
     tar -xzvf ${dist_dir}/${mcnp6_tarball} --strip-components=1
     patch -p0 < patch/dagmc.${mcnp6_version}.patch
     cd ../../../..
   fi
-  if [[ ${install_fluka} == "true" ]]; then
+  if [ ${install_fluka} == "true" ]; then
     if [ ! -x ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka.orig ]; then
       patch -Nb ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka ${name}/src/fluka/rfluka.patch
     fi
@@ -191,28 +192,25 @@ function build_dagmc() {
   cmake_string+=" -DHDF5_ROOT=${install_dir}/hdf5-${hdf5_version}"
   cmake_string+=" -DMOAB_ROOT=${install_dir}/moab-${moab_version}"
 
-  if [[ ${install_mcnp5} == "true" ]]; then
+  if [ ${install_mcnp5} == "true" ]; then
     cmake_string+=" -DBUILD_MCNP5=ON"
     cmake_string+=" -DMCNP5_PLOT=ON"
     cmake_string+=" -DMCNP5_DATAPATH=${DATAPATH}"
   fi
-  if [[ ${install_mcnp6} == "true" ]]; then
+  if [ ${install_mcnp6} == "true" ]; then
     cmake_string+=" -DBUILD_MCNP6=ON"
     cmake_string+=" -DMCNP6_PLOT=ON"
     cmake_string+=" -DMCNP6_DATAPATH=${DATAPATH}"
   fi
   cmake_string+=" -DMPI_BUILD=ON"
   cmake_string+=" -DOPENMP_BUILD=ON"
-  if [[ ${install_geant4} == "true" ]]; then
+  if [ ${install_geant4} == "true" ]; then
     cmake_string+=" -DBUILD_GEANT4=ON"
     cmake_string+=" -DGEANT4_DIR=${install_dir}/geant4-${geant4_version}"
   fi
-  if [[ ${install_fluka} == "true" ]]; then
+  if [ ${install_fluka} == "true" ]; then
     cmake_string+=" -DBUILD_FLUKA=ON"
     cmake_string+=" -DFLUKA_DIR=${install_dir}/fluka-${fluka_version}/bin"
-  fi
-  if [[ ${install_astyle} == "false" ]]; then
-    cmake_string+=" -DBUILD_ASTYLE=OFF"
   fi
   #cmake_string+=" -DBUILD_STATIC_EXE=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
@@ -283,8 +281,8 @@ function build_geant4() {
 function build_hdf5() {
   name=hdf5
   version=${hdf5_version}
-  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
-  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  if   [ "${version:3:1}" == "." ]; then version_major=${version::3}
+  elif [ "${version:4:1}" == "." ]; then version_major=${version::4}
   fi
   folder=${name}-${version}
   tarball=${name}-${version}.tar.gz
@@ -434,14 +432,14 @@ function build_moab() {
 
   name=moab
   version=${moab_version}
-  if [[ ${with_cgm} == "true" ]]; then folder=${name}-${version}-cgm-${cgm_version}
+  if [ ${with_cgm} == "true" ]; then folder=${name}-${version}-cgm-${cgm_version}
   else folder=${name}-${version}
   fi
   if [[ ${compiler} == "intel"* ]]; then
-    if [[ ${version} == "master" ]]; then
+    if [ ${version} == "master" ]; then
       repo=https://bitbucket.org/ljacobson64/${name}
       branch=master-fix-intel
-    elif [[ ${version} == "5.0" ]]; then
+    elif [ ${version} == "5.0" ]; then
       repo=https://bitbucket.org/ljacobson64/${name}
       branch=Version5.0-fix-intel
     else
@@ -449,7 +447,7 @@ function build_moab() {
       branch=Version${version}
     fi
   else
-    if [[ ${version} == "master" ]]; then
+    if [ ${version} == "master" ]; then
       repo=https://bitbucket.org/fathomteam/${name}
       branch=master
     else
@@ -474,7 +472,7 @@ function build_moab() {
   config_string+=" --enable-optimize"
   config_string+=" --disable-debug"
   config_string+=" --with-hdf5=${install_dir}/hdf5-${hdf5_version}"
-  if [[ ${with_cgm} == "true" ]]; then
+  if [ ${with_cgm} == "true" ]; then
     config_string+=" --enable-irel"
     config_string+=" --with-cgm=${install_dir}/cgm-${cgm_version}"
   fi
@@ -483,7 +481,7 @@ function build_moab() {
 
   LDPATH_orig=${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
-  if [[ ${with_cgm} == "true" ]]; then
+  if [ ${with_cgm} == "true" ]; then
     LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
     LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   fi
@@ -521,8 +519,8 @@ function build_mpich() {
 function build_openmpi() {
   name=openmpi
   version=${openmpi_version}
-  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
-  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  if   [ "${version:3:1}" == "." ]; then version_major=${version::3}
+  elif [ "${version:4:1}" == "." ]; then version_major=${version::4}
   fi
   folder=${name}-${version}
   tarball=${name}-${version}.tar.gz
@@ -581,7 +579,7 @@ function build_pyne() {
   setup_string+=" -DCMAKE_C_COMPILER=${CC}"
   setup_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   setup_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
-  if [[ $(basename $CXX) == "icpc" ]]; then
+  if [ $(basename $CXX) == "icpc" ]; then
     setup_string+=" -DCMAKE_BUILD_TYPE=Debug"
   else
     setup_string+=" -DCMAKE_BUILD_TYPE=Release"
