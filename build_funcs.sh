@@ -42,7 +42,7 @@ function build_alara() {
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -72,11 +72,11 @@ function build_armadillo() {
   cmake_string_shared+=" -DBUILD_SHARED_LIBS=ON"
 
   cmake ../src ${cmake_string_static}
-  make -j ${jobs}
+  make -j${jobs}
   make install
   cd ..; rm -rf bld; mkdir -p bld; cd bld
   cmake ../src ${cmake_string_shared}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -113,7 +113,7 @@ function build_cgm() {
   LDPATH_orig=${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
@@ -141,7 +141,7 @@ function build_cmake() {
   config_string+=" --prefix=${install_dir}/${folder}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -224,7 +224,7 @@ function build_dagmc() {
   LD_LIBRARY_PATH=${install_dir}/openmpi-${openmpi_version}/lib:${LD_LIBRARY_PATH}
 
   cmake ../src ${cmake_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
   chmod 750 ${install_dir}/${folder}/bin/mcnp*
 
@@ -288,7 +288,7 @@ function build_gcc() {
   config_string+=" --prefix=${install_dir}/${folder}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -316,7 +316,7 @@ function build_geant4() {
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
 
   cmake ../src ${cmake_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -346,7 +346,7 @@ function build_hdf5() {
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -373,7 +373,7 @@ function build_lapack() {
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
 
   cmake ../src ${cmake_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -406,7 +406,7 @@ function build_mcnp() {
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
 
   cmake ../src ${cmake_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
   cd ..; rm -rf bld; mkdir -p bld; cd bld
   PATH_orig=${PATH}
@@ -414,7 +414,7 @@ function build_mcnp() {
   PATH=${install_dir}/openmpi-${openmpi_version}/bin:${PATH}
   LD_LIBRARY_PATH=${install_dir}/openmpi-${openmpi_version}/lib:${LD_LIBRARY_PATH}
   cmake ../src ${cmake_string} -DMPI_BUILD=ON
-  make -j ${jobs}
+  make -j${jobs}
   make install
   chmod 750 ${install_dir}/${folder}/bin/mcnp*
   PATH=${PATH_orig}
@@ -457,7 +457,7 @@ function build_mcnp2cad() {
   fi
   LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
   LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
-  make -j ${jobs} ${make_string}
+  make -j${jobs} ${make_string}
   mkdir -p ${install_dir}/${folder}/bin
   cp ${build_dir}/${folder}/${name}/mcnp2cad ${install_dir}/${folder}/bin
   LD_LIBRARY_PATH=${LDPATH_orig}
@@ -528,7 +528,7 @@ function build_moab() {
     LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
   fi
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
@@ -554,7 +554,7 @@ function build_mpich() {
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -583,7 +583,7 @@ function build_openmpi() {
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -643,7 +643,7 @@ function build_pyne() {
   PYTHONPATH=${install_dir}/${folder}/lib/python2.7/site-packages:${PYTHONPATH}
 
   python --version
-  python setup.py ${setup_string} install ${setup_string_2} -j ${jobs}
+  python setup.py ${setup_string} install ${setup_string_2} -j${jobs}
   cd ..
   ${install_dir}/${folder}/bin/nuc_data_make
   chmod 640 ${install_dir}/${folder}/lib/python2.7/site-packages/${name}/nuc_data.h5
@@ -677,7 +677,7 @@ function build_python() {
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 }
 
@@ -733,7 +733,7 @@ function build_talys() {
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
 
   cmake ../src ${cmake_string}
-  make -j ${jobs}
+  make -j${jobs}
   make install
 
   cd ${install_dir}/${folder}
