@@ -1,167 +1,46 @@
 #!/bin/bash
 
-function build_cmake() {
-  name=cmake
-  version=${cmake_version}
-  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
-  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
-  fi
-  folder=${name}-${version}
-  tarball=${name}-${version}.tar.gz
-  tar_f=${name}-${version}
-  url=https://cmake.org/files/v${version_major}/${tarball}
+# Package list:
+# - alara
+# - armadillo
+# - cgm
+# - cmake
+# - dagmc
+# - fluka
+# - geant4
+# - hdf5
+# - lapack
+# - mcnp
+# - mcnp2cad
+# - moab
+# - mpich
+# - openmpi
+# - pip
+# - pyne
+# - python
+# - setuptools
+# - talys
+
+function build_alara() {
+  name=ALARA
+  folder=${name}
+  repo=https://github.com/svalinn/${name}
+  branch=master
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${name}/${tarball}
-  ln -snf ${tar_f} src
-  cd bld
-
-  config_string=
-  config_string+=" --prefix=${install_dir}/${folder}"
-
-  ../src/configure ${config_string}
-  make -j ${jobs}
-  make install
-}
-
-function build_openmpi() {
-  name=openmpi
-  version=${openmpi_version}
-  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
-  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
-  fi
-  folder=${name}-${version}
-  tarball=${name}-${version}.tar.gz
-  tar_f=${name}-${version}
-  url=http://www.open-mpi.org/software/ompi/v${version_major}/downloads/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  ln -snf ${tar_f} src
-  cd bld
-
-  config_string=
-  config_string+=" --enable-static"
-  config_string+=" --prefix=${install_dir}/${folder}"
-  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
-
-  ../src/configure ${config_string}
-  make -j ${jobs}
-  make install
-}
-
-function build_mpich() {
-  name=mpich
-  version=${mpich_version}
-  folder=${name}-${version}
-  tarball=${name}-${version}.tar.gz
-  tar_f=${name}-${version}
-  url=http://www.mpich.org/static/downloads/${version}/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  ln -snf ${tar_f} src
-  cd bld
+  git clone ${repo} -b ${branch} --single-branch
+  ln -snf ${name} src
+  cd ${name}
+  autoreconf -fi
+  cd ../bld
 
   config_string=
   config_string+=" --prefix=${install_dir}/${folder}"
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
-  make -j ${jobs}
-  make install
-}
-
-function build_python() {
-  name=python
-  version=${python_version}
-  folder=${name}-${version}
-  tarball=Python-${version}.tgz
-  tar_f=Python-${version}
-  url=https://www.python.org/ftp/python/${version}/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  ln -snf ${tar_f} src
-  cd bld
-
-  config_string=
-  config_string+=" --enable-shared"
-  #config_string+=" --with-lto"
-  #config_string+=" --enable-optimizations"
-  config_string+=" --prefix=${install_dir}/${folder}"
-  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
-
-  ../src/configure ${config_string}
-  make -j ${jobs}
-  make install
-}
-
-function build_hdf5() {
-  name=hdf5
-  version=${hdf5_version}
-  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
-  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
-  fi
-  folder=${name}-${version}
-  tarball=${name}-${version}.tar.gz
-  tar_f=${name}-${version}
-  url=https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${version_major}/hdf5-${version}/src/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  ln -snf ${tar_f} src
-  cd bld
-
-  config_string=
-  config_string+=" --enable-shared"
-  config_string+=" --disable-debug"
-  config_string+=" --prefix=${install_dir}/${folder}"
-  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
-
-  ../src/configure ${config_string}
-  make -j ${jobs}
-  make install
-}
-
-function build_lapack() {
-  name=lapack
-  version=${lapack_version}
-  folder=${name}-${version}
-  tarball=${name}-${version}.tgz
-  tar_f=${name}-${version}
-  url=http://www.netlib.org/lapack/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  ln -snf ${tar_f} src
-  cd bld
-
-  cmake_string=
-  cmake_string+=" -DBUILD_STATIC_LIBS=ON"
-  cmake_string+=" -DBUILD_SHARED_LIBS=ON"
-  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
-  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
-
-  cmake ../src ${cmake_string}
   make -j ${jobs}
   make install
 }
@@ -198,42 +77,6 @@ function build_armadillo() {
   cmake ../src ${cmake_string_shared}
   make -j ${jobs}
   make install
-}
-
-function build_setuptools() {
-  name=setuptools
-  version=${setuptools_version}
-  folder=${name}-${version}
-  tarball=${name}-${version}.zip
-  tar_f=${name}-${version}
-  url=https://pypi.python.org/packages/7c/cb/bdfbb0b6a56459d5461768de824d4f40ec4c4c778f3a8fb0b84c25f03b68/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  cd ${tar_f}
-
-  python setup.py install --user
-}
-
-function build_pip() {
-  name=pip
-  version=${pip_version}
-  folder=${name}-${version}
-  tarball=${name}-${version}.tar.gz
-  tar_f=${name}-${version}
-  url=https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/${tarball}
-
-  cd ${build_dir}
-  mkdir -p ${folder}
-  cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
-  cd ${tar_f}
-
-  python setup.py install --user
 }
 
 function build_cgm() {
@@ -274,209 +117,31 @@ function build_cgm() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-function build_moab() {
-  if [[ ${moab_version} == *"-cgm-"* ]]; then
-    with_cgm=true
-    cgm_version=$(cut -d '-' -f3  <<< "${moab_version}")
-    moab_version=$(cut -d '-' -f1  <<< "${moab_version}")
-  else
-    with_cgm=false
+function build_cmake() {
+  name=cmake
+  version=${cmake_version}
+  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
+  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
   fi
-
-  name=moab
-  version=${moab_version}
-  if [[ ${with_cgm} == "true" ]]; then folder=${name}-${version}-cgm-${cgm_version}
-  else folder=${name}-${version}
-  fi
-  if [[ ${compiler} == "intel"* ]]; then
-    if [[ ${version} == "master" ]]; then
-      repo=https://bitbucket.org/ljacobson64/${name}
-      branch=master-fix-intel
-    elif [[ ${version} == "5.0" ]]; then
-      repo=https://bitbucket.org/ljacobson64/${name}
-      branch=Version5.0-fix-intel
-    else
-      repo=https://bitbucket.org/fathomteam/${name}
-      branch=Version${version}
-    fi
-  else
-    if [[ ${version} == "master" ]]; then
-      repo=https://bitbucket.org/fathomteam/${name}
-      branch=master
-    else
-      repo=https://bitbucket.org/fathomteam/${name}
-      branch=Version${version}
-    fi
-  fi
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  git clone ${repo} -b ${branch} --single-branch
-  ln -snf ${name} src
-  cd ${name}
-  autoreconf -fi
-  cd ../bld
-
-  config_string=
-  config_string+=" --enable-dagmc"
-  config_string+=" --disable-ahf"
-  config_string+=" --enable-shared"
-  config_string+=" --enable-optimize"
-  config_string+=" --disable-debug"
-  config_string+=" --with-hdf5=${install_dir}/hdf5-${hdf5_version}"
-  if [[ ${with_cgm} == "true" ]]; then
-    config_string+=" --enable-irel"
-    config_string+=" --with-cgm=${install_dir}/cgm-${cgm_version}"
-  fi
-  config_string+=" --prefix=${install_dir}/${folder}"
-  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
-
-  LDPATH_orig=${LD_LIBRARY_PATH}
-  LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
-  if [[ ${with_cgm} == "true" ]]; then
-    LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
-    LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
-  fi
-  ../src/configure ${config_string}
-  make -j ${jobs}
-  make install
-  LD_LIBRARY_PATH=${LDPATH_orig}
-}
-
-function build_mcnp() {
-  name=MCNP
-  folder=${name}
-  repo=https://github.com/ljacobson64/MCNP_CMake
-  branch=master
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  git clone ${repo} -b ${branch} --single-branch
-  ln -snf MCNP_CMake src
-  cd MCNP_CMake
-  bash mcnp_source.sh
-  cd ../bld
-
-  cmake_string=
-  cmake_string+=" -DBUILD_MCNP5=ON"
-  cmake_string+=" -DBUILD_MCNPX=ON"
-  cmake_string+=" -DBUILD_MCNP6=ON"
-  cmake_string+=" -DBUILD_MCNP611=ON"
-  cmake_string+=" -DMCNP_PLOT=ON"
-  cmake_string+=" -DOPENMP_BUILD=ON"
-  #cmake_string+=" -DMPI_BUILD=ON"
-  cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
-  cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
-  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
-  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
-
-  cmake ../src ${cmake_string}
-  make -j ${jobs}
-  make install
-  cd ..; rm -rf bld; mkdir -p bld; cd bld
-  PATH_orig=${PATH}
-  LDPATH_orig=${LD_LIBRARY_PATH}
-  PATH=${install_dir}/openmpi-${openmpi_version}/bin:${PATH}
-  LD_LIBRARY_PATH=${install_dir}/openmpi-${openmpi_version}/lib:${LD_LIBRARY_PATH}
-  cmake ../src ${cmake_string} -DMPI_BUILD=ON
-  make -j ${jobs}
-  make install
-  chmod 750 ${install_dir}/${folder}/bin/mcnp*
-  PATH=${PATH_orig}
-  LD_LIBRARY_PATH=${LDPATH_orig}
-}
-
-function build_geant4() {
-  name=geant4
-  version=${geant4_version}
   folder=${name}-${version}
-  tarball=${name}.${version}.tar.gz
-  tar_f=${name}.${version}
-  url=http://geant4.cern.ch/support/source/${tarball}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://cmake.org/files/v${version_major}/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
-  cmake_string=
-  cmake_string+=" -DBUILD_STATIC_LIBS=ON"
-  cmake_string+=" -DGEANT4_USE_SYSTEM_EXPAT=OFF"
-  cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
-  cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
-  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+  config_string=
+  config_string+=" --prefix=${install_dir}/${folder}"
 
-  cmake ../src ${cmake_string}
+  ../src/configure ${config_string}
   make -j ${jobs}
   make install
-}
-
-function build_fluka() {
-  name=fluka
-  version=${fluka_version}
-  folder=${name}-${version}
-  tarball=fluka${version}-linux-gfor64bitAA.tar.gz
-
-  cd ${install_dir}
-  mkdir -p ${folder}/bin
-  cd ${folder}/bin
-  tar -xzvf ${dist_dir}/${tarball}
-  #export FLUFOR=$(basename $FC)
-  export FLUFOR=gfortran
-  export FLUPRO=${PWD}
-
-  make
-  #bash flutil/ldpmqmd
-}
-
-function build_talys() {
-  name=talys
-  version=1.8
-  folder=${name}-${version}
-  tarball_code=${name}${version}_code.tar.gz
-  tarball_data=${name}${version}_data.tar.gz
-  tar_f=${name}
-
-  cd ${build_dir}
-  mkdir -p ${folder}/bld
-  cd ${folder}
-  tar -xzvf ${dist_dir}/${name}/${tarball_code}
-  ln -snf ${tar_f}/source src
-
-  talyspath=`echo ${install_dir}/${folder}/ | sed 's/\//\\\\\//g'`
-  cd ${tar_f}/source
-  sed "s/ home='.*'/ home='${talyspath}'/" machine.f > machine_tmp.f
-  mv machine.f ../machine_orig.f
-  mv machine_tmp.f machine.f
-  rm -f CMakeLists.txt
-  echo "project(talys Fortran)"                   >> CMakeLists.txt
-  echo "cmake_minimum_required(VERSION 2.8)"      >> CMakeLists.txt
-  echo "set(CMAKE_BUILD_TYPE Release)"            >> CMakeLists.txt
-  echo "set(CMAKE_Fortran_FLAGS_RELEASE \"-O1\")" >> CMakeLists.txt
-  echo "file(GLOB SRC_FILES \"*.f\")"             >> CMakeLists.txt
-  echo "add_executable(talys \${SRC_FILES})"      >> CMakeLists.txt
-  echo "install(TARGETS talys DESTINATION bin)"   >> CMakeLists.txt
-  cd ../../bld
-
-  cmake_string=
-  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
-  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
-
-  cmake ../src ${cmake_string}
-  make -j ${jobs}
-  make install
-
-  cd ${install_dir}/${folder}
-  if [ ${compiler} == "native" ]; then
-    tar -xzvf ${dist_dir}/${name}/${tarball_data}
-  else
-    ln -snf ${native_dir}/${folder}/${tar_f} .
-  fi
 }
 
 function build_dagmc() {
@@ -569,6 +234,153 @@ function build_dagmc() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
+function build_fluka() {
+  name=fluka
+  version=${fluka_version}
+  folder=${name}-${version}
+  tarball=fluka${version}-linux-gfor64bitAA.tar.gz
+
+  cd ${install_dir}
+  mkdir -p ${folder}/bin
+  cd ${folder}/bin
+  tar -xzvf ${dist_dir}/${tarball}
+  #export FLUFOR=$(basename $FC)
+  export FLUFOR=gfortran
+  export FLUPRO=${PWD}
+
+  make
+  #bash flutil/ldpmqmd
+}
+
+function build_geant4() {
+  name=geant4
+  version=${geant4_version}
+  folder=${name}-${version}
+  tarball=${name}.${version}.tar.gz
+  tar_f=${name}.${version}
+  url=http://geant4.cern.ch/support/source/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  cmake_string=
+  cmake_string+=" -DBUILD_STATIC_LIBS=ON"
+  cmake_string+=" -DGEANT4_USE_SYSTEM_EXPAT=OFF"
+  cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
+  cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
+  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+
+  cmake ../src ${cmake_string}
+  make -j ${jobs}
+  make install
+}
+
+function build_hdf5() {
+  name=hdf5
+  version=${hdf5_version}
+  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
+  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  fi
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${version_major}/hdf5-${version}/src/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
+  config_string+=" --enable-shared"
+  config_string+=" --disable-debug"
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  ../src/configure ${config_string}
+  make -j ${jobs}
+  make install
+}
+
+function build_lapack() {
+  name=lapack
+  version=${lapack_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tgz
+  tar_f=${name}-${version}
+  url=http://www.netlib.org/lapack/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  cmake_string=
+  cmake_string+=" -DBUILD_STATIC_LIBS=ON"
+  cmake_string+=" -DBUILD_SHARED_LIBS=ON"
+  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
+  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+
+  cmake ../src ${cmake_string}
+  make -j ${jobs}
+  make install
+}
+
+function build_mcnp() {
+  name=MCNP
+  folder=${name}
+  repo=https://github.com/ljacobson64/MCNP_CMake
+  branch=master
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  git clone ${repo} -b ${branch} --single-branch
+  ln -snf MCNP_CMake src
+  cd MCNP_CMake
+  bash mcnp_source.sh
+  cd ../bld
+
+  cmake_string=
+  cmake_string+=" -DBUILD_MCNP5=ON"
+  cmake_string+=" -DBUILD_MCNPX=ON"
+  cmake_string+=" -DBUILD_MCNP6=ON"
+  cmake_string+=" -DBUILD_MCNP611=ON"
+  cmake_string+=" -DMCNP_PLOT=ON"
+  cmake_string+=" -DOPENMP_BUILD=ON"
+  #cmake_string+=" -DMPI_BUILD=ON"
+  cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
+  cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
+  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
+  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+
+  cmake ../src ${cmake_string}
+  make -j ${jobs}
+  make install
+  cd ..; rm -rf bld; mkdir -p bld; cd bld
+  PATH_orig=${PATH}
+  LDPATH_orig=${LD_LIBRARY_PATH}
+  PATH=${install_dir}/openmpi-${openmpi_version}/bin:${PATH}
+  LD_LIBRARY_PATH=${install_dir}/openmpi-${openmpi_version}/lib:${LD_LIBRARY_PATH}
+  cmake ../src ${cmake_string} -DMPI_BUILD=ON
+  make -j ${jobs}
+  make install
+  chmod 750 ${install_dir}/${folder}/bin/mcnp*
+  PATH=${PATH_orig}
+  LD_LIBRARY_PATH=${LDPATH_orig}
+}
+
 function build_mcnp2cad() {
   if [[ ${mcnp2cad_version} == *"cgm-"* ]]; then
     cgm_version=$(cut -d '-' -f2  <<< "${mcnp2cad_version}")
@@ -611,11 +423,40 @@ function build_mcnp2cad() {
   LD_LIBRARY_PATH=${LDPATH_orig}
 }
 
-function build_alara() {
-  name=ALARA
-  folder=${name}
-  repo=https://github.com/svalinn/${name}
-  branch=master
+function build_moab() {
+  if [[ ${moab_version} == *"-cgm-"* ]]; then
+    with_cgm=true
+    cgm_version=$(cut -d '-' -f3  <<< "${moab_version}")
+    moab_version=$(cut -d '-' -f1  <<< "${moab_version}")
+  else
+    with_cgm=false
+  fi
+
+  name=moab
+  version=${moab_version}
+  if [[ ${with_cgm} == "true" ]]; then folder=${name}-${version}-cgm-${cgm_version}
+  else folder=${name}-${version}
+  fi
+  if [[ ${compiler} == "intel"* ]]; then
+    if [[ ${version} == "master" ]]; then
+      repo=https://bitbucket.org/ljacobson64/${name}
+      branch=master-fix-intel
+    elif [[ ${version} == "5.0" ]]; then
+      repo=https://bitbucket.org/ljacobson64/${name}
+      branch=Version5.0-fix-intel
+    else
+      repo=https://bitbucket.org/fathomteam/${name}
+      branch=Version${version}
+    fi
+  else
+    if [[ ${version} == "master" ]]; then
+      repo=https://bitbucket.org/fathomteam/${name}
+      branch=master
+    else
+      repo=https://bitbucket.org/fathomteam/${name}
+      branch=Version${version}
+    fi
+  fi
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -627,12 +468,101 @@ function build_alara() {
   cd ../bld
 
   config_string=
+  config_string+=" --enable-dagmc"
+  config_string+=" --disable-ahf"
+  config_string+=" --enable-shared"
+  config_string+=" --enable-optimize"
+  config_string+=" --disable-debug"
+  config_string+=" --with-hdf5=${install_dir}/hdf5-${hdf5_version}"
+  if [[ ${with_cgm} == "true" ]]; then
+    config_string+=" --enable-irel"
+    config_string+=" --with-cgm=${install_dir}/cgm-${cgm_version}"
+  fi
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  LDPATH_orig=${LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=${install_dir}/hdf5-${hdf5_version}/lib:${LD_LIBRARY_PATH}
+  if [[ ${with_cgm} == "true" ]]; then
+    LD_LIBRARY_PATH=${native_dir}/cubit-${cgm_version}/bin:${LD_LIBRARY_PATH}
+    LD_LIBRARY_PATH=${install_dir}/cgm-${cgm_version}/lib:${LD_LIBRARY_PATH}
+  fi
+  ../src/configure ${config_string}
+  make -j ${jobs}
+  make install
+  LD_LIBRARY_PATH=${LDPATH_orig}
+}
+
+function build_mpich() {
+  name=mpich
+  version=${mpich_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=http://www.mpich.org/static/downloads/${version}/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
   config_string+=" --prefix=${install_dir}/${folder}"
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
   make -j ${jobs}
   make install
+}
+
+function build_openmpi() {
+  name=openmpi
+  version=${openmpi_version}
+  if   [[ "${version:3:1}" == "." ]]; then version_major=${version::3}
+  elif [[ "${version:4:1}" == "." ]]; then version_major=${version::4}
+  fi
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=http://www.open-mpi.org/software/ompi/v${version_major}/downloads/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
+  config_string+=" --enable-static"
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  ../src/configure ${config_string}
+  make -j ${jobs}
+  make install
+}
+
+function build_pip() {
+  name=pip
+  version=${pip_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  cd ${tar_f}
+
+  python setup.py install --user
 }
 
 function build_pyne() {
@@ -681,4 +611,95 @@ function build_pyne() {
   PATH=${PATH_orig}
   LD_LIBRARY_PATH=${LDPATH_orig}
   PYTHONPATH=${PPATH_orig}
+}
+
+function build_python() {
+  name=python
+  version=${python_version}
+  folder=${name}-${version}
+  tarball=Python-${version}.tgz
+  tar_f=Python-${version}
+  url=https://www.python.org/ftp/python/${version}/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
+  config_string+=" --enable-shared"
+  #config_string+=" --with-lto"
+  #config_string+=" --enable-optimizations"
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  ../src/configure ${config_string}
+  make -j ${jobs}
+  make install
+}
+
+function build_setuptools() {
+  name=setuptools
+  version=${setuptools_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.zip
+  tar_f=${name}-${version}
+  url=https://pypi.python.org/packages/7c/cb/bdfbb0b6a56459d5461768de824d4f40ec4c4c778f3a8fb0b84c25f03b68/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  cd ${tar_f}
+
+  python setup.py install --user
+}
+
+function build_talys() {
+  name=talys
+  version=1.8
+  folder=${name}-${version}
+  tarball_code=${name}${version}_code.tar.gz
+  tarball_data=${name}${version}_data.tar.gz
+  tar_f=${name}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  tar -xzvf ${dist_dir}/${name}/${tarball_code}
+  ln -snf ${tar_f}/source src
+
+  talyspath=`echo ${install_dir}/${folder}/ | sed 's/\//\\\\\//g'`
+  cd ${tar_f}/source
+  sed "s/ home='.*'/ home='${talyspath}'/" machine.f > machine_tmp.f
+  mv machine.f ../machine_orig.f
+  mv machine_tmp.f machine.f
+  rm -f CMakeLists.txt
+  echo "project(talys Fortran)"                   >> CMakeLists.txt
+  echo "cmake_minimum_required(VERSION 2.8)"      >> CMakeLists.txt
+  echo "set(CMAKE_BUILD_TYPE Release)"            >> CMakeLists.txt
+  echo "set(CMAKE_Fortran_FLAGS_RELEASE \"-O1\")" >> CMakeLists.txt
+  echo "file(GLOB SRC_FILES \"*.f\")"             >> CMakeLists.txt
+  echo "add_executable(talys \${SRC_FILES})"      >> CMakeLists.txt
+  echo "install(TARGETS talys DESTINATION bin)"   >> CMakeLists.txt
+  cd ../../bld
+
+  cmake_string=
+  cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
+  cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
+
+  cmake ../src ${cmake_string}
+  make -j ${jobs}
+  make install
+
+  cd ${install_dir}/${folder}
+  if [ ${compiler} == "native" ]; then
+    tar -xzvf ${dist_dir}/${name}/${tarball_data}
+  else
+    ln -snf ${native_dir}/${folder}/${tar_f} .
+  fi
 }
