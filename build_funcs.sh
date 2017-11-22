@@ -57,7 +57,7 @@ function build_armadillo() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
   tar -xJvf ${dist_dir}/${tarball}
   ln -snf ${tar_f} src
   cd bld
@@ -132,7 +132,7 @@ function build_cmake() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
   tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
@@ -250,6 +250,48 @@ function build_fluka() {
   #bash flutil/ldpmqmd
 }
 
+function build_gcc() {
+  name=gcc
+  version=${gcc_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=http://www.netgull.com/gcc/releases/gcc-${version}/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
+  ln -snf ${tar_f} src
+  cd ${tar_f}
+
+  gmp_tarball=gmp-${gmp_version}.tar.xz
+  mpfr_tarball=mpfr-${mpfr_version}.tar.gz
+  mpc_tarball=mpc-${mpc_version}.tar.gz
+  gmp_url=https://gmplib.org/download/gmp/${gmp_tarball}
+  mpfr_url=http://www.mpfr.org/mpfr-current/${mpfr_tarball}
+  mpc_url=ftp://ftp.gnu.org/gnu/mpc/${mpc_tarball}
+  if [ ! -f ${dist_dir}/${gmp_tarball}  ]; then wget ${gmp_url}  -P ${dist_dir}/; fi
+  if [ ! -f ${dist_dir}/${mpfr_tarball} ]; then wget ${mpfr_url} -P ${dist_dir}/; fi
+  if [ ! -f ${dist_dir}/${mpc_tarball}  ]; then wget ${mpc_url}  -P ${dist_dir}/; fi
+  tar -xJvf ${dist_dir}/${gmp_tarball}
+  tar -xzvf ${dist_dir}/${mpfr_tarball}
+  tar -xzvf ${dist_dir}/${mpc_tarball}
+  ln -snf gmp-${gmp_version}   gmp
+  ln -snf mpfr-${mpfr_version} mpfr
+  ln -snf mpc-${mpc_version}   mpc
+
+  cd ../bld
+
+  config_string=
+  config_string+=" --prefix=${install_dir}/${folder}"
+
+  ../src/configure ${config_string}
+  make -j ${jobs}
+  make install
+}
+
 function build_geant4() {
   name=geant4
   version=${geant4_version}
@@ -261,8 +303,8 @@ function build_geant4() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -292,8 +334,8 @@ function build_hdf5() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -319,7 +361,7 @@ function build_lapack() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
   tar -xzvf ${dist_dir}/${tarball}
   ln -snf ${tar_f} src
   cd bld
@@ -502,8 +544,8 @@ function build_mpich() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -530,8 +572,8 @@ function build_openmpi() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -556,7 +598,7 @@ function build_pip() {
   cd ${build_dir}
   mkdir -p ${folder}
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
   tar -xzvf ${dist_dir}/${tarball}
   cd ${tar_f}
 
@@ -622,8 +664,8 @@ function build_python() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -650,7 +692,7 @@ function build_setuptools() {
   cd ${build_dir}
   mkdir -p ${folder}
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
   tar -xzvf ${dist_dir}/${tarball}
   cd ${tar_f}
 
