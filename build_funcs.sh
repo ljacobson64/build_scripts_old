@@ -284,7 +284,7 @@ function build_gcc() {
   folder=${name}-${version}
   tarball=${name}-${version}.tar.gz
   tar_f=${name}-${version}
-  url=http://www.netgull.com/gcc/releases/gcc-${version}/${tarball}
+  url=https://ftp.gnu.org/gnu/gcc/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -297,9 +297,9 @@ function build_gcc() {
   gmp_tarball=gmp-${gmp_version}.tar.xz
   mpfr_tarball=mpfr-${mpfr_version}.tar.gz
   mpc_tarball=mpc-${mpc_version}.tar.gz
-  gmp_url=https://gmplib.org/download/gmp/${gmp_tarball}
-  mpfr_url=http://www.mpfr.org/mpfr-current/${mpfr_tarball}
-  mpc_url=ftp://ftp.gnu.org/gnu/mpc/${mpc_tarball}
+  gmp_url=https://ftp.gnu.org/gnu/gmp/${gmp_tarball}
+  mpfr_url=https://ftp.gnu.org/gnu/mpfr/${mpfr_tarball}
+  mpc_url=https://ftp.gnu.org/gnu/mpc/${mpc_tarball}
   if [ ! -f ${dist_dir}/gmp/${gmp_tarball}   ]; then wget ${gmp_url}  -P ${dist_dir}/gmp/;  fi
   if [ ! -f ${dist_dir}/mpfr/${mpfr_tarball} ]; then wget ${mpfr_url} -P ${dist_dir}/mpfr/; fi
   if [ ! -f ${dist_dir}/mpc/${mpc_tarball}   ]; then wget ${mpc_url}  -P ${dist_dir}/mpc/;  fi
