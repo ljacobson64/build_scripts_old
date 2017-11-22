@@ -6,6 +6,7 @@ export cmake_version=3.8.2
 export fluka_version=2011.2c
 export gcc_version=7.2.0
 export geant4_version=10.03.p03
+export git_version=2.15.0
 export gmp_version=6.1.2
 export hdf5_version=1.8.13
 export lapack_version=3.8.0

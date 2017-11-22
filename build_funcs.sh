@@ -9,6 +9,7 @@
 # - fluka
 # - gcc
 # - geant4
+# - git
 # - hdf5
 # - lapack
 # - mcnp
@@ -316,6 +317,29 @@ function build_geant4() {
   cmake_string+=" -DCMAKE_INSTALL_PREFIX=${install_dir}/${folder}"
 
   cmake ../src ${cmake_string}
+  make -j${jobs}
+  make install
+}
+
+function build_git() {
+  name=git
+  version=${git_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://www.kernel.org/pub/software/scm/git/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
+  cd ${tar_f}
+
+  config_string=
+  config_string+=" --prefix=${install_dir}/${folder}"
+
+  ./configure ${config_string}
   make -j${jobs}
   make install
 }
