@@ -6,7 +6,7 @@ function setup_project() {
   cd $1
   tarball=$2-${version}.src.tar.xz
   url=http://releases.llvm.org/${version}/${tarball}
-  if [ ! -f ${dist_dir}/llvm/${tarball} ]; then wget ${url} -P ${dist_dir}/llvm; fi
+  if [ ! -f ${dist_dir}/llvm/${tarball} ]; then wget ${url} -P ${dist_dir}/llvm/; fi
   tar -xJvf ${dist_dir}/llvm/${tarball}
   mv $2-${version}.src $3
   #svn co http://llvm.org/svn/llvm-project/$2/branches/release_50 $3

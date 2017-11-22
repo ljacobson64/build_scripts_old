@@ -59,7 +59,7 @@ if [[ "${HOSTNAME}" == "aci"* ]]; then
   cd ${build_dir}
   tarball=setuptools-${setuptools_version}.zip
   url=https://pypi.python.org/packages/7c/cb/bdfbb0b6a56459d5461768de824d4f40ec4c4c778f3a8fb0b84c25f03b68/${tarball}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
   unzip ${dist_dir}/${tarball}
   cd setuptools-${setuptools_version}
   python setup.py install --user
@@ -69,7 +69,7 @@ fi
 cd ${build_dir}
 tarball=pip-${pip_version}.tar.gz
 url=https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/${tarball}
-if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}; fi
+if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
 tar -xzvf ${dist_dir}/${tarball}
 cd pip-${pip_version}
 python setup.py install --user

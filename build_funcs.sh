@@ -57,8 +57,8 @@ function build_armadillo() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xJvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xJvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -272,12 +272,12 @@ function build_gcc() {
   gmp_url=https://gmplib.org/download/gmp/${gmp_tarball}
   mpfr_url=http://www.mpfr.org/mpfr-current/${mpfr_tarball}
   mpc_url=ftp://ftp.gnu.org/gnu/mpc/${mpc_tarball}
-  if [ ! -f ${dist_dir}/${gmp_tarball}  ]; then wget ${gmp_url}  -P ${dist_dir}/; fi
-  if [ ! -f ${dist_dir}/${mpfr_tarball} ]; then wget ${mpfr_url} -P ${dist_dir}/; fi
-  if [ ! -f ${dist_dir}/${mpc_tarball}  ]; then wget ${mpc_url}  -P ${dist_dir}/; fi
-  tar -xJvf ${dist_dir}/${gmp_tarball}
-  tar -xzvf ${dist_dir}/${mpfr_tarball}
-  tar -xzvf ${dist_dir}/${mpc_tarball}
+  if [ ! -f ${dist_dir}/gmp/${gmp_tarball}   ]; then wget ${gmp_url}  -P ${dist_dir}/gmp/;  fi
+  if [ ! -f ${dist_dir}/mpfr/${mpfr_tarball} ]; then wget ${mpfr_url} -P ${dist_dir}/mpfr/; fi
+  if [ ! -f ${dist_dir}/mpc/${mpc_tarball}   ]; then wget ${mpc_url}  -P ${dist_dir}/mpc/;  fi
+  tar -xJvf ${dist_dir}/gmp/${gmp_tarball}
+  tar -xzvf ${dist_dir}/mpfr/${mpfr_tarball}
+  tar -xzvf ${dist_dir}/mpc/${mpc_tarball}
   ln -snf gmp-${gmp_version}   gmp
   ln -snf mpfr-${mpfr_version} mpfr
   ln -snf mpc-${mpc_version}   mpc
@@ -361,8 +361,8 @@ function build_lapack() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
