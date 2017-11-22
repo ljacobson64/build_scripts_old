@@ -3,6 +3,7 @@
 # Package list:
 # - alara
 # - armadillo
+# - binutils
 # - cgm
 # - cmake
 # - dagmc
@@ -81,6 +82,31 @@ function build_armadillo() {
   make install
 }
 
+function build_binutils() {
+  name=binutils
+  version=${binutils_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://ftp.gnu.org/gnu/binutils/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${name}/${tarball} ]; then wget ${url} -P ${dist_dir}/${name}/; fi
+  tar -xzvf ${dist_dir}/${name}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  ../src/configure ${config_string}
+  make -j${jobs}
+  make install
+}
+
 function build_cgm() {
   name=cgm
   version=${cgm_version}
@@ -140,6 +166,7 @@ function build_cmake() {
 
   config_string=
   config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
   make -j${jobs}
@@ -287,6 +314,7 @@ function build_gcc() {
 
   config_string=
   config_string+=" --prefix=${install_dir}/${folder}"
+  #config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ../src/configure ${config_string}
   make -j${jobs}
@@ -338,6 +366,7 @@ function build_git() {
 
   config_string=
   config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
   ./configure ${config_string}
   make -j${jobs}

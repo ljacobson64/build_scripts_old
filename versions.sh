@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export armadillo_version=8.200.2
+export binutils_version=2.29.1
 export cgm_version=14.0
 export cmake_version=3.8.2
 export fluka_version=2011.2c
