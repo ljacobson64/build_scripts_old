@@ -770,10 +770,13 @@ function build_talys() {
   cd ${tar_f}/source
   sed "s/ home='.*'/ home='${talyspath}'/; s/60/80/" machine.f > machine_tmp.f
   sed "s/60 path/80 path/" talys.cmb > talys_tmp.cmb
+  sed "s/90/110/" fissionpar.f > fissionpar_tmp.f
   mv machine.f ../machine_orig.f
   mv talys.cmb ../talys_orig.cmb
+  mv fissionpar.f ../fissionpar_orig.f
   mv machine_tmp.f machine.f
   mv talys_tmp.cmb talys.cmb
+  mv fissionpar_tmp.f fissionpar.f
   rm -f CMakeLists.txt
   echo "project(talys Fortran)"                   >> CMakeLists.txt
   echo "cmake_minimum_required(VERSION 2.8)"      >> CMakeLists.txt
