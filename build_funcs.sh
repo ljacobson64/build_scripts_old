@@ -187,8 +187,8 @@ function build_dagmc() {
   fi
   mcnp5_version=5.1.60
   mcnp6_version=6.1.1beta
-  mcnp5_tarball=mcnp/mcnp${mcnp5_version}_source.tar.gz
-  mcnp6_tarball=mcnp/mcnp${mcnp6_version}_source.tar.gz
+  mcnp5_tarball=mcnp/mcnp516-source.tar.gz
+  mcnp6_tarball=mcnp/mcnp611-source.tar.gz
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -446,9 +446,12 @@ function build_mcnp() {
   cd ../bld
 
   cmake_string=
-  cmake_string+=" -DBUILD_MCNP5=ON"
-  cmake_string+=" -DBUILD_MCNPX=ON"
-  cmake_string+=" -DBUILD_MCNP6=ON"
+  cmake_string+=" -DBUILD_MCNP514=ON"
+  cmake_string+=" -DBUILD_MCNP515=ON"
+  cmake_string+=" -DBUILD_MCNP516=ON"
+  cmake_string+=" -DBUILD_MCNPX27=ON"
+  cmake_string+=" -DBUILD_MCNP602=ON"
+  cmake_string+=" -DBUILD_MCNP610=ON"
   cmake_string+=" -DBUILD_MCNP611=ON"
   cmake_string+=" -DMCNP_PLOT=ON"
   cmake_string+=" -DOPENMP_BUILD=ON"
