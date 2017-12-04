@@ -196,50 +196,58 @@ function build_dagmc() {
   git clone ${repo} -b ${branch} --single-branch
   ln -snf ${name} src
 
-  if [ ${install_mcnp5} == "true" ]; then
+  build_dagmcnp5=true
+  build_dagmcnp6=true
+  if [[ ${HOSTNAME} == "aci"* ]]; then
+    if [ ${compiler} == "gcc-6"* ] || [[ ${compiler} == "gcc-7"* ]]; then
+      build_fludag=true
+      build_daggeant4=true
+    else
+      build_fludag=false
+      build_daggeant4=false
+    fi
+  else
+    build_fludag=true
+    build_daggeant4=true
+  fi
+
+  cmake_string=
+
+  if [ ${build_dagmcnp5} == "true" ]; then
     cd ${name}/src/mcnp/mcnp5
     tar -xzvf ${dist_dir}/${mcnp5_tarball} --strip-components=1
     patch -p0 < patch/dagmc.${mcnp5_version}.patch
     cd ../../../..
-  fi
-  if [ ${install_mcnp6} == "true" ]; then
-    cd ${name}/src/mcnp/mcnp6
-    tar -xzvf ${dist_dir}/${mcnp6_tarball} --strip-components=1
-    patch -p0 < patch/dagmc.${mcnp6_version}.patch
-    cd ../../../..
-  fi
-  if [ ${install_fluka} == "true" ]; then
-    if [ ! -x ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka.orig ]; then
-      patch -Nb ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka ${name}/src/fluka/rfluka.patch
-    fi
-  fi
-  cd bld
-
-  cmake_string=
-
-  cmake_string+=" -DHDF5_ROOT=${install_dir}/hdf5-${hdf5_version}"
-  cmake_string+=" -DMOAB_ROOT=${install_dir}/moab-${moab_version}"
-
-  if [ ${install_mcnp5} == "true" ]; then
     cmake_string+=" -DBUILD_MCNP5=ON"
     cmake_string+=" -DMCNP5_PLOT=ON"
     cmake_string+=" -DMCNP5_DATAPATH=${DATAPATH}"
   fi
-  if [ ${install_mcnp6} == "true" ]; then
+  if [ ${build_dagmcnp6} == "true" ]; then
+    cd ${name}/src/mcnp/mcnp6
+    tar -xzvf ${dist_dir}/${mcnp6_tarball} --strip-components=1
+    patch -p0 < patch/dagmc.${mcnp6_version}.patch
+    cd ../../../..
     cmake_string+=" -DBUILD_MCNP6=ON"
     cmake_string+=" -DMCNP6_PLOT=ON"
     cmake_string+=" -DMCNP6_DATAPATH=${DATAPATH}"
   fi
-  cmake_string+=" -DMPI_BUILD=ON"
-  cmake_string+=" -DOPENMP_BUILD=ON"
-  if [ ${install_geant4} == "true" ]; then
-    cmake_string+=" -DBUILD_GEANT4=ON"
-    cmake_string+=" -DGEANT4_DIR=${install_dir}/geant4-${geant4_version}"
-  fi
-  if [ ${install_fluka} == "true" ]; then
+  if [ ${build_fludag} == "true" ]; then
+    if [ ! -x ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka.orig ]; then
+      patch -Nb ${install_dir}/fluka-${fluka_version}/bin/flutil/rfluka ${name}/src/fluka/rfluka.patch
+    fi
     cmake_string+=" -DBUILD_FLUKA=ON"
     cmake_string+=" -DFLUKA_DIR=${install_dir}/fluka-${fluka_version}/bin"
   fi
+  if [ ${build_daggeant4} == "true" ]; then
+    cmake_string+=" -DBUILD_GEANT4=ON"
+    cmake_string+=" -DGEANT4_DIR=${install_dir}/geant4-${geant4_version}"
+  fi
+  cd bld
+
+  cmake_string+=" -DHDF5_ROOT=${install_dir}/hdf5-${hdf5_version}"
+  cmake_string+=" -DMOAB_ROOT=${install_dir}/moab-${moab_version}"
+  cmake_string+=" -DMPI_BUILD=ON"
+  cmake_string+=" -DOPENMP_BUILD=ON"
   #cmake_string+=" -DBUILD_STATIC_EXE=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
   cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
@@ -445,14 +453,24 @@ function build_mcnp() {
   bash mcnp_source.sh
   cd ../bld
 
+  build_mcnp514=true
+  build_mcnp515=true
+  build_mcnp516=true
+  if [[ ${HOSTNAME} == "aci"* ]] && [ ${compiler} == "intel-16" ]; then build_mcnpx27=false
+  else build_mcnpx27=true
+  fi
+  build_mcnp602=true
+  build_mcnp610=true
+  build_mcnp611=true
+
   cmake_string=
-  cmake_string+=" -DBUILD_MCNP514=ON"
-  cmake_string+=" -DBUILD_MCNP515=ON"
-  cmake_string+=" -DBUILD_MCNP516=ON"
-  cmake_string+=" -DBUILD_MCNPX27=ON"
-  cmake_string+=" -DBUILD_MCNP602=ON"
-  cmake_string+=" -DBUILD_MCNP610=ON"
-  cmake_string+=" -DBUILD_MCNP611=ON"
+  if [ ${build_mcnp514} == "true" ]; then cmake_string+=" -DBUILD_MCNP514=ON"; fi
+  if [ ${build_mcnp515} == "true" ]; then cmake_string+=" -DBUILD_MCNP515=ON"; fi
+  if [ ${build_mcnp516} == "true" ]; then cmake_string+=" -DBUILD_MCNP516=ON"; fi
+  if [ ${build_mcnpx27} == "true" ]; then cmake_string+=" -DBUILD_MCNPX27=ON"; fi
+  if [ ${build_mcnp602} == "true" ]; then cmake_string+=" -DBUILD_MCNP602=ON"; fi
+  if [ ${build_mcnp610} == "true" ]; then cmake_string+=" -DBUILD_MCNP610=ON"; fi
+  if [ ${build_mcnp611} == "true" ]; then cmake_string+=" -DBUILD_MCNP611=ON"; fi
   cmake_string+=" -DMCNP_PLOT=ON"
   cmake_string+=" -DOPENMP_BUILD=ON"
   #cmake_string+=" -DMPI_BUILD=ON"

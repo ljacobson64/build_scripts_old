@@ -109,21 +109,6 @@ ${CXX}   --version
 ${FC}    --version
 ${CMAKE} --version
 
-install_mcnp5=true
-install_mcnp6=true
-if [[ ${HOSTNAME} == "aci"* ]]; then
-  if [ ${compiler} == "gcc-6"* ] || [ ${compiler} == "gcc-7"* ]; then
-    install_fluka=true
-    install_geant4=true
-  else
-    install_fluka=false
-    install_geant4=false
-  fi
-else
-  install_fluka=true
-  install_geant4=true
-fi
-
 source versions.sh
 source build_funcs.sh
 mkdir -p ${build_dir}
