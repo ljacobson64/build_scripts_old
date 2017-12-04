@@ -3,6 +3,7 @@
 # Package list:
 # - alara
 # - armadillo
+# - astyle
 # - binutils
 # - cgm
 # - cmake
@@ -10,8 +11,10 @@
 # - fluka
 # - gcc
 # - geant4
+# - geany
 # - git
 # - hdf5
+# - intltool
 # - lapack
 # - mcnp
 # - mcnp2cad
@@ -80,6 +83,31 @@ function build_armadillo() {
   cmake ../src ${cmake_string_shared}
   make -j${jobs}
   make install
+}
+
+function build_astyle() {
+  name=astyle
+  version=${astyle_version}
+  folder=${name}-${version}
+  tarball=${name}_${version}_linux.tar.gz
+  tar_f=${name}
+  url=https://sourceforge.net/projects/astyle/files/astyle/astyle%20${version}/astyle_${version}_linux.tar.gz
+
+  cd ${build_dir}
+  mkdir -p ${folder}
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  cd ${tar_f}/build
+  if [[ ${compiler} == "clang"* ]]; then cd clang
+  elif [[ ${compiler} == "intel"* ]]; then cd intel
+  else cd gcc
+  fi
+
+  make -j${jobs}
+  mkdir -p ${install_dir}/${folder}
+  cp -r bin ../../file ${install_dir}/${folder}/
+  chmod -x ${install_dir}/${folder}/file/*
 }
 
 function build_binutils() {
@@ -199,7 +227,7 @@ function build_dagmc() {
   build_dagmcnp5=true
   build_dagmcnp6=true
   if [[ ${HOSTNAME} == "aci"* ]]; then
-    if [ ${compiler} == "gcc-6"* ] || [[ ${compiler} == "gcc-7"* ]]; then
+    if [ ${compiler} == "gcc-6" ] || [ ${compiler} == "gcc-7" ]; then
       build_fludag=true
       build_daggeant4=true
     else
@@ -357,6 +385,31 @@ function build_geant4() {
   make install
 }
 
+function build_geany() {
+  name=geany
+  version=${geany_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=http://download.geany.org/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  ../src/configure ${config_string}
+  make -j${jobs}
+  make install
+}
+
 function build_git() {
   name=git
   version=${git_version}
@@ -403,6 +456,31 @@ function build_hdf5() {
   config_string=
   config_string+=" --enable-shared"
   config_string+=" --disable-debug"
+  config_string+=" --prefix=${install_dir}/${folder}"
+  config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
+
+  ../src/configure ${config_string}
+  make -j${jobs}
+  make install
+}
+
+function build_intltool() {
+  name=intltool
+  version=${intltool_version}
+  folder=${name}-${version}
+  tarball=${name}-${version}.tar.gz
+  tar_f=${name}-${version}
+  url=https://launchpad.net/intltool/trunk/${version}/+download/${tarball}
+
+  cd ${build_dir}
+  mkdir -p ${folder}/bld
+  cd ${folder}
+  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
+  tar -xzvf ${dist_dir}/${tarball}
+  ln -snf ${tar_f} src
+  cd bld
+
+  config_string=
   config_string+=" --prefix=${install_dir}/${folder}"
   config_string+=" CC=${CC} CXX=${CXX} FC=${FC}"
 
