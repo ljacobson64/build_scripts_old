@@ -213,10 +213,9 @@ function build_dagmc() {
   if [ ${moab_version} == "4.9.2" ]; then branch=moab-${moab_version}
   else branch=latest
   fi
-  mcnp5_version=5.1.60
-  mcnp6_version=6.1.1beta
-  mcnp5_tarball=mcnp/mcnp516-source.tar.gz
-  mcnp6_tarball=mcnp/mcnp611-source.tar.gz
+
+  mcnp5_version=516
+  mcnp6_version=611
 
   cd ${build_dir}
   mkdir -p ${folder}/bld
@@ -243,8 +242,8 @@ function build_dagmc() {
 
   if [ ${build_dagmcnp5} == "true" ]; then
     cd ${name}/src/mcnp/mcnp5
-    tar -xzvf ${dist_dir}/${mcnp5_tarball} --strip-components=1
-    patch -p0 < patch/dagmc.${mcnp5_version}.patch
+    tar -xzvf ${dist_dir}/mcnp/mcnp${mcnp5_version}-source.tar.gz --strip-components=1
+    patch -p0 < patch/dag-mcnp${mcnp5_version}.patch
     cd ../../../..
     cmake_string+=" -DBUILD_MCNP5=ON"
     cmake_string+=" -DMCNP5_PLOT=ON"
@@ -252,8 +251,8 @@ function build_dagmc() {
   fi
   if [ ${build_dagmcnp6} == "true" ]; then
     cd ${name}/src/mcnp/mcnp6
-    tar -xzvf ${dist_dir}/${mcnp6_tarball} --strip-components=1
-    patch -p0 < patch/dagmc.${mcnp6_version}.patch
+    tar -xzvf ${dist_dir}/mcnp/mcnp${mcnp6_version}-source.tar.gz --strip-components=1
+    patch -p0 < patch/dag-mcnp${mcnp6_version}.patch
     cd ../../../..
     cmake_string+=" -DBUILD_MCNP6=ON"
     cmake_string+=" -DMCNP6_PLOT=ON"
