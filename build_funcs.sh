@@ -838,7 +838,7 @@ function build_setuptools() {
   folder=${name}-${version}
   tarball=${name}-${version}.zip
   tar_f=${name}-${version}
-  url=https://pypi.python.org/packages/7c/cb/bdfbb0b6a56459d5461768de824d4f40ec4c4c778f3a8fb0b84c25f03b68/${tarball}
+  url=https://pypi.python.org/packages/69/56/f0f52281b5175e3d9ca8623dadbc3b684e66350ea9e0006736194b265e99/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}
