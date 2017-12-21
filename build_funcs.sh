@@ -276,6 +276,7 @@ function build_dagmc() {
   cmake_string+=" -DMPI_BUILD=ON"
   #cmake_string+=" -DOPENMP_BUILD=ON"
   #cmake_string+=" -DBUILD_STATIC_EXE=ON"
+  #cmake_string+=" -DBUILD_PIC=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
   cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
@@ -548,9 +549,11 @@ function build_mcnp() {
   if [ ${build_mcnp602} == "true" ]; then cmake_string+=" -DBUILD_MCNP602=ON"; fi
   if [ ${build_mcnp610} == "true" ]; then cmake_string+=" -DBUILD_MCNP610=ON"; fi
   if [ ${build_mcnp611} == "true" ]; then cmake_string+=" -DBUILD_MCNP611=ON"; fi
-  cmake_string+=" -DMCNP_PLOT=ON"
-  cmake_string+=" -DOPENMP_BUILD=ON"
-  #cmake_string+=" -DMPI_BUILD=ON"
+  cmake_string+=" -DBUILD_PLOT=ON"
+  cmake_string+=" -DBUILD_OPENMP=ON"
+  #cmake_string+=" -DBUILD_MPI=ON"
+  #cmake_string+=" -DBUILD_STATIC_EXE=ON"
+  #cmake_string+=" -DBUILD_PIC=ON"
   cmake_string+=" -DCMAKE_C_COMPILER=${CC}"
   cmake_string+=" -DCMAKE_CXX_COMPILER=${CXX}"
   cmake_string+=" -DCMAKE_Fortran_COMPILER=${FC}"
@@ -564,7 +567,7 @@ function build_mcnp() {
   LDPATH_orig=${LD_LIBRARY_PATH}
   PATH=${install_dir}/openmpi-${openmpi_version}/bin:${PATH}
   LD_LIBRARY_PATH=${install_dir}/openmpi-${openmpi_version}/lib:${LD_LIBRARY_PATH}
-  cmake ../src ${cmake_string} -DMPI_BUILD=ON
+  cmake ../src ${cmake_string} -DBUILD_MPI=ON
   make -j${jobs}
   make install
   chmod 750 ${install_dir}/${folder}/bin/mcnp*
