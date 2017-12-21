@@ -24,7 +24,7 @@ fi
 
 mkdir -p ${build_dir}/advantg-${version}
 cd ${build_dir}/advantg-${version}
-tar -xzvf ${dist_dir}/advantg-${version}-release.tgz
+tar -xzvf ${dist_dir}/misc/advantg-${version}-release.tgz
 cd advantg-${version}-release/Installers
 
 bash advantg-${version}-linux-x86_64-setup.sh \
