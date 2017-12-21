@@ -96,8 +96,8 @@ function build_astyle() {
   cd ${build_dir}
   mkdir -p ${folder}
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
+  tar -xzvf ${dist_dir}/misc/${tarball}
   cd ${tar_f}/build
   if [[ ${compiler} == "clang"* ]]; then cd clang
   elif [[ ${compiler} == "intel"* ]]; then cd intel
@@ -304,7 +304,7 @@ function build_fluka() {
   cd ${install_dir}
   mkdir -p ${folder}/bin
   cd ${folder}/bin
-  tar -xzvf ${dist_dir}/${tarball}
+  tar -xzvf ${dist_dir}/misc/${tarball}
   #export FLUFOR=$(basename $FC)
   export FLUFOR=gfortran
   export FLUPRO=${PWD}
@@ -395,8 +395,8 @@ function build_geany() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
+  tar -xzvf ${dist_dir}/misc/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -474,8 +474,8 @@ function build_intltool() {
   cd ${build_dir}
   mkdir -p ${folder}/bld
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
+  tar -xzvf ${dist_dir}/misc/${tarball}
   ln -snf ${tar_f} src
   cd bld
 
@@ -749,8 +749,8 @@ function build_pip() {
   cd ${build_dir}
   mkdir -p ${folder}
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
+  tar -xzvf ${dist_dir}/misc/${tarball}
   cd ${tar_f}
 
   python setup.py install --user
@@ -843,8 +843,8 @@ function build_setuptools() {
   cd ${build_dir}
   mkdir -p ${folder}
   cd ${folder}
-  if [ ! -f ${dist_dir}/${tarball} ]; then wget ${url} -P ${dist_dir}/; fi
-  tar -xzvf ${dist_dir}/${tarball}
+  if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
+  tar -xzvf ${dist_dir}/misc/${tarball}
   cd ${tar_f}
 
   python setup.py install --user
