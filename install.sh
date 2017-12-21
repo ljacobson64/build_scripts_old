@@ -67,7 +67,7 @@ elif [[ ${compiler} == "clang"* ]]; then
   fi
   if [[ ${HOSTNAME} == "aci"* ]] || [[ ${HOSTNAME} == "tux"* ]]; then
     if   [ ${compiler} == "clang-4.0" ]; then clang_dir=${native_dir}/llvm-4.0.1
-    elif [ ${compiler} == "clang-5.0" ]; then clang_dir=${native_dir}/llvm-5.0.0
+    elif [ ${compiler} == "clang-5.0" ]; then clang_dir=${native_dir}/llvm-5.0.1
     else unknown_compiler
     fi
     PATH=${clang_dir}/bin:${PATH}
