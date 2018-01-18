@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export armadillo_version=8.300.2
+export armadillo_version=8.300.3
 export astyle_version=3.0.1
 export binutils_version=2.29.1
 export cgm_version=14.0
@@ -15,10 +15,10 @@ export hdf5_version=1.8.13
 export intltool_version=0.51.0
 export lapack_version=3.8.0
 export moab_version=5.0
-export mpc_version=1.0.3
-export mpfr_version=3.1.6
+export mpc_version=1.1.0
+export mpfr_version=4.0.0
 export mpich_version=3.2.1
 export openmpi_version=1.10.7
 export pip_version=9.0.1
 export python_version=2.7.14
-export setuptools_version=38.2.4
+export setuptools_version=38.4.0

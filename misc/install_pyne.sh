@@ -7,7 +7,7 @@ umask 0022
 
 hdf5_version=1.8.13
 moab_version=4.9.1
-setuptools_version=38.2.4
+setuptools_version=38.4.0
 pip_version=9.0.1
 
 jobs=`grep -c processor /proc/cpuinfo`
@@ -58,7 +58,7 @@ mkdir -p ${build_dir}
 if [[ "${HOSTNAME}" == "aci"* ]]; then
   cd ${build_dir}
   tarball=setuptools-${setuptools_version}.zip
-  url=https://pypi.python.org/packages/69/56/f0f52281b5175e3d9ca8623dadbc3b684e66350ea9e0006736194b265e99/${tarball}
+  url=https://pypi.python.org/packages/41/5f/6da80400340fd48ba4ae1c673be4dc3821ac06cd9821ea60f9c7d32a009f/${tarball}
   if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
   unzip ${dist_dir}/misc/${tarball}
   cd setuptools-${setuptools_version}
