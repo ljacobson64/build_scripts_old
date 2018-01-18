@@ -271,8 +271,7 @@ function build_dagmc() {
   fi
   cd bld
 
-  cmake_string+=" -DHDF5_ROOT=${install_dir}/hdf5-${hdf5_version}"
-  cmake_string+=" -DMOAB_ROOT=${install_dir}/moab-${moab_version}"
+  cmake_string+=" -DMOAB_DIR=${install_dir}/moab-${moab_version}"
   cmake_string+=" -DMPI_BUILD=ON"
   #cmake_string+=" -DOPENMP_BUILD=ON"
   #cmake_string+=" -DBUILD_STATIC_EXE=ON"
