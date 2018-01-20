@@ -299,7 +299,11 @@ function build_fluka() {
   name=fluka
   version=${fluka_version}
   folder=${name}-${version}
-  tarball=fluka${version}-linux-gfor64bitAA.tar.gz
+  if [[ ${HOSTNAME} == "tux"* ]] || [[ ${HOSTNAME} == "aci"* ]]; then
+    tarball=fluka${version}-linux-gfor6.3-64bitAA.tar.gz
+  else
+    tarball=fluka${version}-linux-gfor64bitAA.tar.gz
+  fi
 
   cd ${install_dir}
   mkdir -p ${folder}/bin
