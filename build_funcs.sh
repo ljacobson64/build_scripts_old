@@ -299,11 +299,7 @@ function build_fluka() {
   name=fluka
   version=${fluka_version}
   folder=${name}-${version}
-  if [[ ${HOSTNAME} == "tux"* ]] || [[ ${HOSTNAME} == "aci"* ]]; then
-    tarball=fluka${version}-linux-gfor6.3-64bitAA.tar.gz
-  else
-    tarball=fluka${version}-linux-gfor64bitAA.tar.gz
-  fi
+  tarball=fluka${version}-linux-gfor64bitAA.tar.gz
 
   cd ${install_dir}
   mkdir -p ${folder}/bin
@@ -844,7 +840,7 @@ function build_setuptools() {
   folder=${name}-${version}
   tarball=${name}-${version}.zip
   tar_f=${name}-${version}
-  url=https://pypi.python.org/packages/41/5f/6da80400340fd48ba4ae1c673be4dc3821ac06cd9821ea60f9c7d32a009f/${tarball}
+  url=https://pypi.python.org/packages/6c/54/f7e9cea6897636a04e74c3954f0d8335cc38f7d01e27eec98026b049a300/${tarball}
 
   cd ${build_dir}
   mkdir -p ${folder}
