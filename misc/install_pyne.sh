@@ -58,7 +58,7 @@ mkdir -p ${build_dir}
 if [[ "${HOSTNAME}" == "aci"* ]]; then
   cd ${build_dir}
   tarball=setuptools-${setuptools_version}.zip
-  url=https://pypi.python.org/packages/6c/54/f7e9cea6897636a04e74c3954f0d8335cc38f7d01e27eec98026b049a300/${tarball}
+  url=https://pypi.python.org/packages/e0/02/2b14188e06ddf61e5b462e216b15d893e8472fca28b1b0c5d9272ad7e87c/${tarball}
   if [ ! -f ${dist_dir}/misc/${tarball} ]; then wget ${url} -P ${dist_dir}/misc/; fi
   unzip ${dist_dir}/misc/${tarball}
   cd setuptools-${setuptools_version}
